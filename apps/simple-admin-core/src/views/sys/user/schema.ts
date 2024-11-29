@@ -5,7 +5,7 @@ import { h } from 'vue';
 import { type VbenFormProps } from '@vben/common-ui';
 import { $t } from '@vben/locales';
 
-import { message, Switch } from 'ant-design-vue';
+import { Switch } from 'ant-design-vue';
 
 import { z } from '#/adapter/form';
 import { getDepartmentList } from '#/api/sys/department';
@@ -18,10 +18,6 @@ export const tableColumns: VxeGridProps = {
     {
       type: 'checkbox',
       width: 60,
-    },
-    {
-      title: $t('sys.login.username'),
-      field: 'username',
     },
     {
       title: $t('sys.user.nickname'),
@@ -39,11 +35,6 @@ export const tableColumns: VxeGridProps = {
           h(Switch, {
             checked: e.row.status === 1,
             onClick: () => {
-              if (e.row.username === 'admin') {
-                message.warn($t('sys.role.adminStatusChangeForbidden'));
-                return;
-              }
-
               const newStatus = e.row.status === 1 ? 2 : 1;
               updateUser({ id: e.row.id, status: newStatus }).then(() => {
                 e.row.status = newStatus;
@@ -62,11 +53,6 @@ export const tableColumns: VxeGridProps = {
 
 export const searchFormSchemas: VbenFormProps = {
   schema: [
-    {
-      fieldName: 'username',
-      label: $t('sys.login.username'),
-      component: 'Input',
-    },
     {
       fieldName: 'nickname',
       label: $t('sys.user.nickname'),
@@ -123,12 +109,6 @@ export const dataFormSchemas: VbenFormProps = {
         show: false,
         triggerFields: ['id'],
       },
-    },
-    {
-      fieldName: 'username',
-      label: $t('sys.login.username'),
-      component: 'Input',
-      rules: z.string().max(50),
     },
     {
       fieldName: 'nickname',

@@ -111,8 +111,8 @@ export interface LoginResp {
 export interface GetUserInfoModel {
   // 用户id
   userId: number | string;
-  // 用户名
-  username: string;
+  // 邮箱
+  email: string;
   // 昵称
   nickname: string;
   // 头像

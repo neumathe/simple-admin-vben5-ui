@@ -35,7 +35,7 @@ enum Api {
   Login = '/sys-api/user/login',
   LoginByEmail = '/sys-api/user/login_by_email',
   LoginBySms = '/sys-api/user/login_by_sms',
-  Logout = '/sys-api/user/logout',
+  Logout = '/sys-api/user/logout?source=web',
   Profile = '/sys-api/user/profile',
   Register = '/sys-api/user/register',
   RegisterByEmail = '/sys-api/user/register_by_email',

@@ -11,6 +11,10 @@ interface BasicUserInfo {
    */
   departmentName: string;
   /**
+   * 邮箱
+   */
+  email: string;
+  /**
    * 用户昵称
    */
   realName: string;
@@ -22,10 +26,6 @@ interface BasicUserInfo {
    * 用户id
    */
   userId: string;
-  /**
-   * 用户名
-   */
-  username: string;
 }
 
 interface AccessState {

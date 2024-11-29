@@ -20,15 +20,15 @@ const authStore = useAuthStore();
 
 const loginType: BasicOption[] = [
   {
-    label: $t('sys.login.captcha'),
+    label: $t('sys.login.password'),
     value: 'captcha',
   },
+  // {
+  //   label: $t('sys.login.mobile'),
+  //   value: 'mobile',
+  // },
   {
-    label: $t('sys.login.mobile'),
-    value: 'mobile',
-  },
-  {
-    label: $t('sys.login.email'),
+    label: $t('sys.login.emailCode'),
     value: 'email',
   },
 ];
@@ -82,11 +82,14 @@ const formSchema = computed((): VbenFormSchema[] => {
     {
       component: 'VbenInput',
       componentProps: {
-        placeholder: $t('authentication.usernameTip'),
+        placeholder: $t('authentication.emailTip'),
       },
-      fieldName: 'username',
-      label: $t('authentication.username'),
-      rules: z.string().min(1, { message: $t('authentication.usernameTip') }),
+      fieldName: 'email',
+      label: $t('authentication.email'),
+      rules: z
+        .string()
+        .email({ message: $t('authentication.emailValidErrorTip') })
+        .min(1, { message: $t('authentication.emailTip') }),
       dependencies: {
         if(values) {
           return values.selectLoginType === 'captcha';
@@ -214,7 +217,7 @@ async function handleLogin(values: any) {
         .authLogin(
           {
             password: values.password,
-            username: values.username,
+            email: values.email,
             captcha: values.captcha,
             captchaId: captchaId.value,
           },
