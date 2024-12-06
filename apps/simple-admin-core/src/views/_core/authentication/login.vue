@@ -7,6 +7,7 @@ import { computed, h, ref } from 'vue';
 
 import { AuthenticationLogin, z } from '@vben/common-ui';
 import { $t } from '@vben/locales';
+import { usePreferences } from '@vben/preferences';
 
 import { Image } from 'ant-design-vue';
 
@@ -20,6 +21,8 @@ const authStore = useAuthStore();
 const emailRegex =
   /^[\w.!#$%&'*+/=?^`{|}~-]+@[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?(?:\.[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?)*$/i;
 const phoneRegex = /^1[3-9]\d{9}$/;
+const { isDark } = usePreferences();
+
 const loginType: BasicOption[] = [
   {
     label: $t('sys.login.password'),
@@ -98,7 +101,6 @@ const formSchema = computed((): VbenFormSchema[] => {
         if(values) {
           return values.selectLoginType === 'captcha';
         },
-        // 只有指定的字段改变时，才会触发
         triggerFields: ['selectLoginType'],
       },
       formItemClass: 'col-span-2 items-baseline',
@@ -122,7 +124,6 @@ const formSchema = computed((): VbenFormSchema[] => {
         if(values) {
           return values.selectLoginType !== 'captcha';
         },
-        // 只有指定的字段改变时，才会触发
         triggerFields: ['selectLoginType', 'target'],
       },
       formItemClass: 'col-span-2 items-baseline',
@@ -136,7 +137,6 @@ const formSchema = computed((): VbenFormSchema[] => {
         if(values) {
           return values.selectLoginType === 'captcha';
         },
-        // 只有指定的字段改变时，才会触发
         triggerFields: ['selectLoginType'],
       },
       fieldName: 'password',
@@ -151,7 +151,6 @@ const formSchema = computed((): VbenFormSchema[] => {
         if(values) {
           return values.selectLoginType === 'captcha';
         },
-        // 只有指定的字段改变时，才会触发
         triggerFields: ['selectLoginType'],
       },
       component: 'VbenInput',
@@ -174,13 +173,15 @@ const formSchema = computed((): VbenFormSchema[] => {
         height: 40,
         preview: false,
         onClick: getCaptchaData,
+        style: {
+          backgroundColor: isDark.value ? '#eee' : 'transparent',
+        },
       },
       formItemClass: 'col-span-1 items-baseline',
       dependencies: {
         if(values) {
           return values.selectLoginType === 'captcha';
         },
-        // 只有指定的字段改变时，才会触发
         triggerFields: ['selectLoginType'],
       },
     },
@@ -200,7 +201,6 @@ const formSchema = computed((): VbenFormSchema[] => {
         if(values) {
           return values.selectLoginType !== 'captcha';
         },
-        // 只有指定的字段改变时，才会触发
         triggerFields: ['selectLoginType'],
       },
       fieldName: 'captchaVerified',
