@@ -17,7 +17,9 @@ import { useAuthStore } from '#/store';
 defineOptions({ name: 'Login' });
 
 const authStore = useAuthStore();
-
+const emailRegex =
+  /^[\w.!#$%&'*+/=?^`{|}~-]+@[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?(?:\.[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?)*$/i;
+const phoneRegex = /^1[3-9]\d{9}$/;
 const loginType: BasicOption[] = [
   {
     label: $t('sys.login.password'),
@@ -82,14 +84,16 @@ const formSchema = computed((): VbenFormSchema[] => {
     {
       component: 'VbenInput',
       componentProps: {
-        placeholder: $t('authentication.emailTip'),
+        placeholder: $t('authentication.emailOrPhoneTip'),
       },
-      fieldName: 'email',
-      label: $t('authentication.email'),
+      fieldName: 'emailOrPhone',
+      label: $t('authentication.emailOrPhone'),
       rules: z
         .string()
-        .email({ message: $t('authentication.emailValidErrorTip') })
-        .min(1, { message: $t('authentication.emailTip') }),
+        .min(1, { message: $t('authentication.emailOrPhoneTip') })
+        .refine((value) => emailRegex.test(value) || phoneRegex.test(value), {
+          message: '请输入有效的邮箱地址或手机号',
+        }),
       dependencies: {
         if(values) {
           return values.selectLoginType === 'captcha';
@@ -217,7 +221,7 @@ async function handleLogin(values: any) {
         .authLogin(
           {
             password: values.password,
-            email: values.email,
+            emailOrPhone: values.emailOrPhone,
             captcha: values.captcha,
             captchaId: captchaId.value,
           },

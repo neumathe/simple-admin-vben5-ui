@@ -12233,7 +12233,7 @@ snapshots:
       '@floating-ui/dom': 1.6.12
       '@locator/shared': 0.4.4
       solid-js: 1.9.3
-      tailwindcss: 3.4.15
+      tailwindcss: 3.4.16
     transitivePeerDependencies:
       - ts-node
 

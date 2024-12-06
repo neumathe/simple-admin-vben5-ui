@@ -43,7 +43,7 @@ export interface ChangePasswordReq {
  * @description: Login interface parameters
  */
 export interface LoginReq {
-  username: string;
+  emailOrPhone: string;
   password: string;
   captcha: string;
   captchaId: string;
