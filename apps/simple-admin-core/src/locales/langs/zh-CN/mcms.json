@@ -61,5 +61,37 @@
     "sendSms": "发送短信",
     "paramsHelp": "使用逗号隔开",
     "templateIdHelp": "若模板 ID 为空,则使用默认配置,且无需配置签名和服务商"
+  },
+  "mcmsNotice": {
+    "status": "是否启用",
+    "title": "标题",
+    "content": "内容",
+    "type": "类型",
+    "duration": "持续时间",
+    "once": "一次性展示",
+    "reference": "外部链接",
+    "addMcmsNotice": "添加公告",
+    "editMcmsNotice": "编辑公告",
+    "mcmsNoticeList": "公告列表"
+  },
+  "mcmsBanner": {
+    "status": "是否启用",
+    "image": "图片链接",
+    "type": "展示平台",
+    "name": "名字",
+    "description": "描述",
+    "reference": "外部链接",
+    "addMcmsBanner": "添加Banner",
+    "editMcmsBanner": "编辑Banner",
+    "mcmsBannerList": "Banner列表"
+  },
+  "noticeType": {
+    "innerPage": "页面内嵌展示",
+    "dialog": "对话框弹出",
+    "rightTop": "右上角弹出"
+  },
+  "bannerType": {
+    "web": "网页端",
+    "miniprogram": "小程序"
   }
 }
