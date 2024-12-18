@@ -84,6 +84,11 @@ export const searchFormSchemas: VbenFormProps = {
       label: $t('sys.login.email'),
       component: 'Input',
     },
+    {
+      fieldName: 'description',
+      label: $t('sys.user.description'),
+      component: 'Input',
+    },
   ],
 };
 
@@ -128,6 +133,7 @@ export const dataFormSchemas: VbenFormProps = {
       defaultValue: '/dashboard',
       component: 'Input',
       rules: z.string().max(70).optional(),
+      help: $t('sys.role.defaultRouterHelpMessage'),
     },
     {
       fieldName: 'mobile',
