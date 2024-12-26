@@ -1,4 +1,5 @@
 import { createApp, watchEffect } from 'vue';
+import VueDOMPurifyHTML from 'vue-dompurify-html';
 
 import { registerAccessDirective } from '@vben/access';
 import { preferences } from '@vben/preferences';
@@ -32,6 +33,7 @@ async function bootstrap(namespace: string) {
   // 配置路由及路由守卫
   app.use(router);
 
+  app.use(VueDOMPurifyHTML);
   // 动态更新标题
   watchEffect(() => {
     if (preferences.app.dynamicTitle) {

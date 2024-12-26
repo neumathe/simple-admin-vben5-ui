@@ -52,10 +52,13 @@
     "@wangeditor-next/editor-for-vue": "catalog:",
     "ant-design-vue": "catalog:",
     "dayjs": "catalog:",
+    "mathpix-markdown-it": "2.0.1",
+    "patch-package": "^8.0.0",
     "pinia": "catalog:",
     "remeda": "catalog:",
     "vue": "catalog:",
     "vue-codemirror": "catalog:",
+    "vue-dompurify-html": "^5.2.0",
     "vue-router": "catalog:"
   },
   "devDependencies": {

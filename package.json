@@ -103,12 +103,16 @@
       "@ast-grep/napi": "catalog:",
       "@ctrl/tinycolor": "catalog:",
       "clsx": "catalog:",
+      "mathjax-full": "3.0.1",
       "pinia": "catalog:",
       "vue": "catalog:"
     },
     "neverBuiltDependencies": [
       "canvas",
       "node-gyp"
-    ]
+    ],
+    "patchedDependencies": {
+      "mathjax-full": "patches/mathjax-full+3.0.1.patch"
+    }
   }
 }
