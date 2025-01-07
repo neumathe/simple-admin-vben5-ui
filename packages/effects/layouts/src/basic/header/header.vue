@@ -7,12 +7,7 @@ import { preferences, usePreferences } from '@vben/preferences';
 import { useAccessStore } from '@vben/stores';
 import { VbenFullScreen, VbenIconButton } from '@vben-core/shadcn-ui';
 
-import {
-  GlobalSearch,
-  LanguageToggle,
-  PreferencesButton,
-  ThemeToggle,
-} from '../../widgets';
+import { GlobalSearch, PreferencesButton, ThemeToggle } from '../../widgets';
 
 interface Props {
   /**
@@ -127,6 +122,9 @@ function clearPreferencesAndLogout() {
   <div class="flex-center hidden lg:block">
     <slot name="breadcrumb"></slot>
   </div>
+  <div class="flex-center block">
+    <slot name="chapterSelect"></slot>
+  </div>
   <template
     v-for="slot in leftSlots.filter((item) => item.index > REFERENCE_VALUE)"
     :key="slot.name"
@@ -157,7 +155,7 @@ function clearPreferencesAndLogout() {
           <ThemeToggle class="mr-1 mt-[2px]" />
         </template>
         <template v-else-if="slot.name === 'language-toggle'">
-          <LanguageToggle class="mr-1" />
+          <!--LanguageToggle class="mr-1" /-->
         </template>
         <template v-else-if="slot.name === 'fullscreen'">
           <VbenFullScreen class="mr-1" />

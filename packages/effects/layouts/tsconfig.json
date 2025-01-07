@@ -1,6 +1,12 @@
 {
   "$schema": "https://json.schemastore.org/tsconfig",
   "extends": "@vben/tsconfig/web.json",
-  "include": ["src"],
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "#/*": ["../../../apps/simple-admin-core/src/*"]
+    }
+  },
+  "include": ["src", "../../../apps/simple-admin-core/src/**/*.ts"],
   "exclude": ["node_modules"]
 }

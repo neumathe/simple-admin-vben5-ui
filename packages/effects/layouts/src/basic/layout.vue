@@ -2,6 +2,7 @@
 import type { MenuRecordRaw } from '@vben/types';
 
 import { computed, useSlots, watch } from 'vue';
+import { useRoute } from 'vue-router';
 
 import { useRefresh } from '@vben/hooks';
 import { $t } from '@vben/locales';
@@ -15,7 +16,12 @@ import { cloneDeep, mapTree } from '@vben/utils';
 import { VbenAdminLayout } from '@vben-core/layout-ui';
 import { VbenBackTop, VbenLogo } from '@vben-core/shadcn-ui';
 
-import { Breadcrumb, CheckUpdates, Preferences } from '../widgets';
+import {
+  Breadcrumb,
+  ChapterSelect,
+  CheckUpdates,
+  Preferences,
+} from '../widgets';
 import { LayoutContent, LayoutContentSpinner } from './content';
 import { Copyright } from './copyright';
 import { LayoutFooter } from './footer';
@@ -30,9 +36,18 @@ import {
 import { LayoutTabbar } from './tabbar';
 
 defineOptions({ name: 'BasicLayout' });
-
 const emit = defineEmits<{ clearPreferencesAndLogout: [] }>();
 
+const route = useRoute();
+
+const isSequentialRoute = computed(() => {
+  const { subject, chapter } = route.params;
+  return (
+    route.path.startsWith('/qbmsc/sequential/') &&
+    subject !== undefined &&
+    chapter !== undefined
+  );
+});
 const {
   isDark,
   isHeaderNav,
@@ -225,7 +240,11 @@ const headerSlots = computed(() => {
             :show-home="preferences.breadcrumb.showHome"
             :show-icon="preferences.breadcrumb.showIcon"
             :type="preferences.breadcrumb.styleType"
+            class="mr-4"
           />
+        </template>
+        <template v-if="isSequentialRoute" #chapterSelect>
+          <ChapterSelect />
         </template>
         <template v-if="showHeaderNav" #menu>
           <LayoutMenu

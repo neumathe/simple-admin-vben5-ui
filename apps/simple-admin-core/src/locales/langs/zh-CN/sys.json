@@ -334,6 +334,9 @@
     "tokenManagement": "Token管理",
     "otherPages": "其他页面",
     "positionManagement": "职位管理",
-    "taskManagement": "定时任务管理"
+    "taskManagement": "定时任务管理",
+    "questionBankManagement": "题库管理",
+    "questionManagement": "题目管理",
+    "chapterManagement": "章节管理"
   }
 }

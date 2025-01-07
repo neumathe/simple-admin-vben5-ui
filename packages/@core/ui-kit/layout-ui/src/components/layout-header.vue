@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { CSSProperties } from 'vue';
-import { computed, useSlots } from 'vue';
+import { computed } from 'vue';
 
 interface Props {
   /**
@@ -39,7 +39,7 @@ interface Props {
 
 const props = withDefaults(defineProps<Props>(), {});
 
-const slots = useSlots();
+// const slots = useSlots();
 
 const style = computed((): CSSProperties => {
   const { fullWidth, height, show } = props;
@@ -52,11 +52,11 @@ const style = computed((): CSSProperties => {
   };
 });
 
-const logoStyle = computed((): CSSProperties => {
-  return {
-    minWidth: `${props.isMobile ? 40 : props.sidebarWidth}px`,
-  };
-});
+// const logoStyle = computed((): CSSProperties => {
+//   return {
+//     minWidth: `${props.isMobile ? 40 : props.sidebarWidth}px`,
+//   };
+// });
 </script>
 
 <template>
@@ -65,9 +65,9 @@ const logoStyle = computed((): CSSProperties => {
     :style="style"
     class="border-border bg-header top-0 flex w-full flex-[0_0_auto] items-center border-b pl-2 transition-[margin-top] duration-200"
   >
-    <div v-if="slots.logo" :style="logoStyle">
+    <!--div v-if="slots.logo" :style="logoStyle">
       <slot name="logo"></slot>
-    </div>
+    </!--div-->
 
     <slot name="toggle-button"> </slot>
 

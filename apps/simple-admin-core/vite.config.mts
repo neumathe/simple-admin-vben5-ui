@@ -25,6 +25,12 @@ export default defineConfig(async () => {
           //   target: 'http://localhost:5320/api',
           //   ws: true,
           // },
+          '/question-api': {
+            changeOrigin: true,
+            rewrite: (path) => path.replace(/^\/question-api/, ''),
+            target: 'http://localhost:9201/',
+            ws: true,
+          },
           '/sys-api': {
             changeOrigin: true,
             rewrite: (path) => path.replace(/^\/sys-api/, ''),

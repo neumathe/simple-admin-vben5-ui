@@ -14,15 +14,6 @@ import { openWindow } from '@vben/utils';
 
 import { Card, TypographyTitle } from 'ant-design-vue';
 
-import { Latex } from '#/components/questions';
-
-const text = `
-设离散型随机变量 $X$ 的分布律为 \\begin{tabular}{c|ccc}
-\\hline$X$ & -2 & 0 & 2 \\\\
-\\hline$p_i$ & 0.4 & 0.3 & 0.3 \\\\
-\\hline
-\\end{tabular} , 则 $E(X)=($ ).
-`;
 const userStore = useUserStore();
 
 // 同样，这里的 url 也可以使用以 http 开头的外部链接
@@ -94,7 +85,6 @@ function navTo(nav: WorkbenchProjectItem | WorkbenchQuickNavItem) {
       </template>
       <template #description> 今日晴，20℃ - 32℃！ </template>
     </WorkbenchHeader>
-    <Latex :value="text" />
     <div class="mt-5 flex flex-col lg:flex-row">
       <div class="mr-4 w-full lg:w-3/5">
         <Card :title="$t('sys.sys.version')">
