@@ -98,28 +98,23 @@ function processHtml(html: string | undefined) {
 </script>
 
 <template>
-  <div class="flex items-center" style="line-height: 3">
-    <!-- Render compiled Markdown if value contains '$' -->
-    <div
-      v-if="props.value.includes('$')"
-      v-dompurify-html="processHtml(compiledMarkdown(props.value))"
-    ></div>
-    <div v-else>
-      <template
-        v-for="(segment, idx) in splitTextByType(props.value)"
-        :key="idx"
+  <!-- Render compiled Markdown if value contains '$' -->
+  <div
+    v-if="props.value.includes('$')"
+    v-dompurify-html="processHtml(compiledMarkdown(props.value))"
+  ></div>
+  <div v-else>
+    <template v-for="(segment, idx) in splitTextByType(props.value)" :key="idx">
+      <span
+        :class="{
+          'font-chinese': segment.type === 'chinese',
+          'font-english': segment.type === 'english',
+          'font-number': segment.type === 'number',
+        }"
       >
-        <span
-          :class="{
-            'font-chinese': segment.type === 'chinese',
-            'font-english': segment.type === 'english',
-            'font-number': segment.type === 'number',
-          }"
-        >
-          {{ segment.text }}
-        </span>
-      </template>
-    </div>
+        {{ segment.text }}
+      </span>
+    </template>
   </div>
 </template>
 

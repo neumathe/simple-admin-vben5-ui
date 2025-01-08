@@ -12,7 +12,7 @@ import {
   findSiblingLeafNodes,
 } from '#/api/qbms/psChapter';
 import { getQuestionList } from '#/api/qbms/question';
-import SingleChoice from '#/components/questions/singleChoice.vue';
+import Question from '#/components/questions/question.vue';
 
 defineOptions({
   name: 'SequentialPractice',
@@ -63,8 +63,8 @@ onMounted(() => {
 
 <template>
   <div>
-    <div v-for="question in questions" :key="question.id">
-      <SingleChoice :question="question" />
+    <div v-for="(question, index) in questions" :key="question.id">
+      <Question :index="index + 1" :question="question" />
     </div>
     <div class="bg-card flex flex-col items-center p-5">
       <div
