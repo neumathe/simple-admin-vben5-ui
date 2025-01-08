@@ -6,15 +6,14 @@ import type {
 
 import { useRouter } from 'vue-router';
 
-import { WorkbenchHeader, WorkbenchQuickNav } from '@vben/common-ui';
+import { WorkbenchQuickNav } from '@vben/common-ui';
 import { $t } from '@vben/locales';
-import { preferences } from '@vben/preferences';
-import { useUserStore } from '@vben/stores';
+// import { useUserStore } from '@vben/stores';
 import { openWindow } from '@vben/utils';
 
 import { Card, TypographyTitle } from 'ant-design-vue';
 
-const userStore = useUserStore();
+// const userStore = useUserStore();
 
 // 同样，这里的 url 也可以使用以 http 开头的外部链接
 const quickNavItems: WorkbenchQuickNavItem[] = [
@@ -88,9 +87,7 @@ function navTo(nav: WorkbenchProjectItem | WorkbenchQuickNavItem) {
     <div class="mt-5 flex flex-col lg:flex-row">
       <div class="mr-4 w-full lg:w-3/5">
         <Card :title="$t('sys.sys.version')">
-          <TypographyTitle :level="5">
-            Simple Admin v1.6.0 - Preview
-          </TypographyTitle>
+          <TypographyTitle :level="5"> Simple Admin v1.6.2 </TypographyTitle>
         </Card>
       </div>
       <div class="w-full lg:w-2/5">
