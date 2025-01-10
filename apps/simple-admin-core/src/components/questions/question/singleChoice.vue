@@ -1,7 +1,17 @@
 <script lang="ts" setup>
-import { computed, onBeforeUnmount, onMounted, type PropType, ref } from 'vue';
+import {
+  computed,
+  onBeforeUnmount,
+  onMounted,
+  type PropType,
+  ref,
+  watch,
+} from 'vue';
 
-import { type QuestionInfo } from '#/api/qbms/model/questionModel';
+import {
+  type QuestionChoiceInfo,
+  type QuestionInfo,
+} from '#/api/qbms/model/questionModel';
 
 import Latex from './template/latex.vue';
 
@@ -10,9 +20,18 @@ const props = defineProps({
     type: Object as PropType<QuestionInfo>,
     default: () => ({}),
   },
+  showAnalysis: {
+    type: Boolean,
+    default: false,
+  },
+  showAnswer: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 const radioChoice = ref<number>(0);
+const shuffledChoices = ref<QuestionChoiceInfo[]>([]);
 
 // 获取屏幕宽度
 const screenWidth = ref(window.innerWidth);
@@ -23,38 +42,69 @@ const updateScreenWidth = () => {
 
 onMounted(() => {
   window.addEventListener('resize', updateScreenWidth);
+  shuffleOptions();
 });
 
 onBeforeUnmount(() => {
   window.removeEventListener('resize', updateScreenWidth);
 });
 
+// Shuffle function
+function shuffleOptions() {
+  if (props.question.choice) {
+    shuffledChoices.value = [...props.question.choice].sort(
+      () => Math.random() - 0.5,
+    );
+  }
+}
+
 const columnClass = computed(() => {
-  if (!props.question.choice || props.question.choice.length === 0) {
+  if (!shuffledChoices.value || shuffledChoices.value.length === 0) {
     return 'grid-cols-1';
   }
 
-  // TODO: 后续字体大小支持设置 这里也要根据字体计算
   const charLimit = screenWidth.value / 20;
 
-  for (let i = 0; i < props.question.choice.length - 1; i++) {
+  for (let i = 0; i < shuffledChoices.value.length - 1; i++) {
     if (
-      (props.question.choice[i]?.choice?.length ?? 0) +
-        (props.question.choice[i + 1]?.choice?.length ?? 0) >
+      (shuffledChoices.value[i]?.choice?.length ?? 0) +
+        (shuffledChoices.value[i + 1]?.choice?.length ?? 0) >
       charLimit
     ) {
       return 'grid-cols-1';
     }
   }
 
-  // 默认使用双列
   return 'grid-cols-2';
 });
 
 function selectOption(optionId: number) {
-  radioChoice.value = optionId;
+  if (!props.showAnswer) {
+    radioChoice.value = optionId;
+  }
 }
+
+// Watch for changes in showAnswer
+watch(
+  () => props.showAnswer,
+  (newValue, oldValue) => {
+    if (newValue) {
+      const correctOption = shuffledChoices.value.find(
+        (option) => option.isAnswer,
+      );
+      if (correctOption) {
+        radioChoice.value = correctOption.id!;
+      }
+    } else if (!newValue && oldValue) {
+      radioChoice.value = 0;
+    }
+  },
+);
+
+// Disable interaction when showAnswer is true
+const isDisabled = computed(() => props.showAnswer);
 </script>
+
 <template>
   <div class="w-full">
     <div class="inline-block w-full overflow-x-auto py-2">
@@ -64,7 +114,7 @@ function selectOption(optionId: number) {
     <!-- 选项部分 -->
     <div :class="`grid gap-4 ${columnClass} py-2`">
       <label
-        v-for="option in props.question.choice"
+        v-for="option in shuffledChoices"
         :key="option.id"
         :class="[
           {
@@ -76,11 +126,14 @@ function selectOption(optionId: number) {
         ]"
         :for="`option-${option.id}`"
         class="flex cursor-pointer items-center gap-3 rounded-md border p-3 transition-all duration-200"
-        @click="option.id !== undefined && selectOption(option.id)"
+        @click="
+          !isDisabled && option.id !== undefined && selectOption(option.id)
+        "
       >
         <input
           :id="`option-${option.id}`"
           :checked="radioChoice === option.id"
+          :disabled="isDisabled"
           :value="option.id"
           class="hidden"
           type="radio"
@@ -93,8 +146,34 @@ function selectOption(optionId: number) {
       </label>
     </div>
 
-    <div class="inline-block w-full overflow-x-auto py-2">
-      <Latex :value="props.question.analysis" class="break-words" />
-    </div>
+    <transition name="analysis">
+      <div v-show="props.showAnalysis">
+        <div class="inline-block w-full overflow-hidden py-2">
+          <Latex :value="props.question.analysis" class="break-words" />
+        </div>
+      </div>
+    </transition>
   </div>
 </template>
+
+<style scoped>
+.analysis-enter-active,
+.analysis-leave-active {
+  overflow: hidden;
+  transition:
+    height 0.5s ease,
+    opacity 0.5s ease;
+}
+
+.analysis-enter-from,
+.analysis-leave-to {
+  height: 0;
+  opacity: 0;
+}
+
+.analysis-enter-to,
+.analysis-leave-from {
+  height: auto;
+  opacity: 1;
+}
+</style>

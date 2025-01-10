@@ -1,0 +1,28 @@
+<script lang="ts" setup>
+import { SwitchItem } from '@vben/layouts';
+
+import { SettingOutlined } from '@ant-design/icons-vue';
+import { FloatButtonGroup } from 'ant-design-vue';
+
+import { useQuestionConfig } from '#/store/questionConfig';
+
+import SliderItem from './base/slider-item.vue';
+
+const questionStore = useQuestionConfig();
+</script>
+<template>
+  <FloatButtonGroup class="bottom-[4.5rem]" shape="circle" trigger="click">
+    <template #icon>
+      <SettingOutlined />
+    </template>
+    <div
+      class="bg-card border-box relative -left-[170px] w-[210px] rounded-md border p-2"
+    >
+      <SwitchItem v-model="questionStore.showAnswer"> 显示答案 </SwitchItem>
+      <SwitchItem v-model="questionStore.showAnalysis"> 显示解析 </SwitchItem>
+      <SliderItem v-model="questionStore.fontSize" :max="10" :min="1">
+        字体大小
+      </SliderItem>
+    </div>
+  </FloatButtonGroup>
+</template>

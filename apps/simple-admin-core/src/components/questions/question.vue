@@ -1,7 +1,11 @@
 <script lang="ts" setup>
 import { onBeforeUnmount, onMounted, type PropType, ref } from 'vue';
 
+import { Icon } from '@iconify/vue';
+import { Button, Tooltip } from 'ant-design-vue';
+
 import { type QuestionInfo } from '#/api/qbms/model/questionModel';
+import { useQuestionConfig } from '#/store/questionConfig';
 
 import SingleChoice from './question/singleChoice.vue';
 
@@ -30,9 +34,15 @@ onMounted(() => {
 onBeforeUnmount(() => {
   window.removeEventListener('resize', updateScreenWidth);
 });
+
+const showAnalysis = ref(false);
+const questionConfigStore = useQuestionConfig();
 </script>
 <template>
-  <div class="bg-card m-5 flex flex-col rounded-lg shadow-xl">
+  <div
+    class="bg-card m-5 flex flex-col rounded-lg shadow-xl transition-[height] duration-1000 ease-in-out"
+    style="interpolate-size: allow-keywords; height: auto"
+  >
     <!-- 头部操作区 -->
     <div class="flex items-center justify-between px-4 py-3">
       <!-- 左侧题目序号 -->
@@ -45,13 +55,57 @@ onBeforeUnmount(() => {
       </div>
       <!-- 右侧操作按钮 -->
       <div class="flex space-x-2">
-        <Button icon="star" />
-        <Button icon="comment" />
-        <Button icon="exclamation-circle" />
-        <Button icon="edit" />
-        <Button icon="database" />
-        <Button icon="history" />
-        <Button icon="eye" />
+        <Tooltip title="显示解析">
+          <Button
+            v-if="!questionConfigStore.showAnalysis"
+            :style="{
+              backgroundColor: showAnalysis ? '#1890ff' : '#f0f0f0',
+              color: showAnalysis ? '#fff' : '#000',
+            }"
+            shape="circle"
+            @click="
+              () => {
+                showAnalysis = !showAnalysis;
+              }
+            "
+          >
+            <Icon class="m-auto" icon="lineicons:search" />
+          </Button>
+        </Tooltip>
+        <Tooltip title="收藏题目">
+          <Button
+            v-if="!questionConfigStore.showAnalysis"
+            :style="{
+              backgroundColor: showAnalysis ? '#52c41a' : '#f0f0f0',
+              color: showAnalysis ? '#fff' : '#000',
+            }"
+            shape="circle"
+            @click="
+              () => {
+                showAnalysis = !showAnalysis;
+              }
+            "
+          >
+            <Icon class="m-auto" icon="raphael:star2off" />
+          </Button>
+        </Tooltip>
+        <Tooltip title="加入错题本">
+          <Button
+            v-if="!questionConfigStore.showAnalysis"
+            :style="{
+              backgroundColor: showAnalysis ? '#ff4d4f' : '#f0f0f0',
+              color: showAnalysis ? '#fff' : '#000',
+            }"
+            shape="circle"
+            @click="
+              () => {
+                showAnalysis = !showAnalysis;
+              }
+            "
+          >
+            <Icon class="m-auto" icon="material-symbols:add-notes-outline" />
+          </Button>
+        </Tooltip>
       </div>
     </div>
     <hr class="border-t" />
@@ -67,7 +121,9 @@ onBeforeUnmount(() => {
         <SingleChoice
           v-if="props.question.questionType === 1"
           :question="props.question"
-          class="max-w-full gap-4 border-none xl:order-none xl:w-1/2"
+          :show-analysis="showAnalysis || questionConfigStore.showAnalysis"
+          :show-answer="questionConfigStore.showAnswer"
+          class="max-w-full gap-4 border-none xl:order-none"
         />
       </div>
       <!-- 右侧元素 -->

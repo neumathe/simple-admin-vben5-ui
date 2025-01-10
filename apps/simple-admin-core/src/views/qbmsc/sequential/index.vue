@@ -12,6 +12,7 @@ import {
   findSiblingLeafNodes,
 } from '#/api/qbms/psChapter';
 import { getQuestionList } from '#/api/qbms/question';
+import { FloatSetting } from '#/components/configuration';
 import Question from '#/components/questions/question.vue';
 
 defineOptions({
@@ -105,5 +106,6 @@ onMounted(() => {
         </Button>
       </div>
     </div>
+    <FloatSetting />
   </div>
 </template>

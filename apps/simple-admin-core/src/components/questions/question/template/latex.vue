@@ -3,20 +3,23 @@ import { type PropType } from 'vue';
 
 import { MathpixMarkdownModel as MM } from 'mathpix-markdown-it';
 
+import { useQuestionConfig } from '#/store/questionConfig';
+
 const props = defineProps({
   value: {
     type: String as PropType<string>,
     default: '',
   },
 });
-
+const questionConfig = useQuestionConfig();
 // Compile Markdown using Mathpix
 function compiledMarkdown(val: string) {
   const isLoad = MM.loadMathJax();
   if (isLoad) {
-    return MM.markdownToHTML(val, {
+    return MM.convertToHTML(val, {
       htmlTags: true,
       breaks: false,
+      // fontSize: 10 + questionConfig.fontSize,
     });
   }
 }
@@ -56,14 +59,19 @@ function processHtml(html: string | undefined) {
         switch (segment.type) {
           case 'chinese': {
             span.className = 'font-chinese';
+            span.style.fontSize = `${questionConfig.fontSize + 10}px`;
             break;
           }
           case 'english': {
             span.className = 'font-english';
+            span.style.fontSize = `${questionConfig.fontSize + 10}px`;
+
             break;
           }
           case 'number': {
             span.className = 'font-number';
+            span.style.fontSize = `${questionConfig.fontSize + 10}px`;
+
             break;
           }
           default: {
@@ -111,6 +119,7 @@ function processHtml(html: string | undefined) {
           'font-english': segment.type === 'english',
           'font-number': segment.type === 'number',
         }"
+        :style="{ fontSize: `${questionConfig.fontSize + 10}px` }"
       >
         {{ segment.text }}
       </span>
