@@ -20,6 +20,8 @@ const questionStore = useQuestionConfig();
     >
       <SwitchItem v-model="questionStore.showAnswer"> 显示答案 </SwitchItem>
       <SwitchItem v-model="questionStore.showAnalysis"> 显示解析 </SwitchItem>
+      <SwitchItem v-model="questionStore.showComment"> 显示评论 </SwitchItem>
+      <SwitchItem v-model="questionStore.showNote"> 显示笔记 </SwitchItem>
       <SliderItem v-model="questionStore.fontSize" :max="10" :min="1">
         字体大小
       </SliderItem>

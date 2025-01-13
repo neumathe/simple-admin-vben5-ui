@@ -16,10 +16,10 @@ const questionConfig = useQuestionConfig();
 function compiledMarkdown(val: string) {
   const isLoad = MM.loadMathJax();
   if (isLoad) {
-    return MM.convertToHTML(val, {
+    return MM.render(val, {
       htmlTags: true,
       breaks: false,
-      // fontSize: 10 + questionConfig.fontSize,
+      fontSize: 10 + questionConfig.fontSize,
     });
   }
 }
@@ -106,24 +106,29 @@ function processHtml(html: string | undefined) {
 </script>
 
 <template>
-  <!-- Render compiled Markdown if value contains '$' -->
-  <div
-    v-if="props.value.includes('$')"
-    v-dompurify-html="processHtml(compiledMarkdown(props.value))"
-  ></div>
-  <div v-else>
-    <template v-for="(segment, idx) in splitTextByType(props.value)" :key="idx">
-      <span
-        :class="{
-          'font-chinese': segment.type === 'chinese',
-          'font-english': segment.type === 'english',
-          'font-number': segment.type === 'number',
-        }"
-        :style="{ fontSize: `${questionConfig.fontSize + 10}px` }"
+  <div class="inline-block w-full">
+    <!-- Render compiled Markdown if value contains '$' -->
+    <div
+      v-if="props.value.includes('$')"
+      v-dompurify-html="processHtml(compiledMarkdown(props.value))"
+    ></div>
+    <div v-else>
+      <template
+        v-for="(segment, idx) in splitTextByType(props.value)"
+        :key="idx"
       >
-        {{ segment.text }}
-      </span>
-    </template>
+        <span
+          :class="{
+            'font-chinese': segment.type === 'chinese',
+            'font-english': segment.type === 'english',
+            'font-number': segment.type === 'number',
+          }"
+          :style="{ fontSize: `${questionConfig.fontSize + 10}px` }"
+        >
+          {{ segment.text }}
+        </span>
+      </template>
+    </div>
   </div>
 </template>
 
@@ -141,6 +146,14 @@ function processHtml(html: string | undefined) {
 }
 
 .math-inline {
+  max-width: none !important;
   vertical-align: middle;
+}
+
+svg {
+  width: initial !important;
+  max-width: none !important;
+  height: initial !important;
+  max-height: none !important;
 }
 </style>

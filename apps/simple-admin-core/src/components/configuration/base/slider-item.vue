@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 
 import { Slider } from 'ant-design-vue';
 
@@ -28,6 +28,10 @@ const value = defineModel<number>();
 function handleChange(newValue: number) {
   value.value = newValue;
 }
+
+onMounted(() => {
+  sliderValue.value = value.value;
+});
 </script>
 
 <template>

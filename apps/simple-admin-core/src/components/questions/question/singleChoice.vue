@@ -43,6 +43,15 @@ const updateScreenWidth = () => {
 onMounted(() => {
   window.addEventListener('resize', updateScreenWidth);
   shuffleOptions();
+
+  if (props.showAnswer) {
+    const correctOption = shuffledChoices.value.find(
+      (option) => option.isAnswer,
+    );
+    if (correctOption) {
+      radioChoice.value = correctOption.id!;
+    }
+  }
 });
 
 onBeforeUnmount(() => {
@@ -107,9 +116,7 @@ const isDisabled = computed(() => props.showAnswer);
 
 <template>
   <div class="w-full">
-    <div class="inline-block w-full overflow-x-auto py-2">
-      <Latex :value="props.question.question" class="break-words" />
-    </div>
+    <Latex :value="props.question.question" class="overflow-x-auto py-2" />
 
     <!-- 选项部分 -->
     <div :class="`grid gap-4 ${columnClass} py-2`">
@@ -125,7 +132,7 @@ const isDisabled = computed(() => props.showAnswer);
           },
         ]"
         :for="`option-${option.id}`"
-        class="flex cursor-pointer items-center gap-3 rounded-md border p-3 transition-all duration-200"
+        class="flex cursor-pointer items-center gap-3 overflow-x-auto rounded-md border p-3 transition-all duration-200"
         @click="
           !isDisabled && option.id !== undefined && selectOption(option.id)
         "
@@ -139,18 +146,14 @@ const isDisabled = computed(() => props.showAnswer);
           type="radio"
         />
         <span>
-          <div class="inline-block w-full overflow-x-auto">
-            <Latex :value="option.choice" class="break-words" />
-          </div>
+          <Latex :value="option.choice" />
         </span>
       </label>
     </div>
 
     <transition name="analysis">
       <div v-show="props.showAnalysis">
-        <div class="inline-block w-full overflow-hidden py-2">
-          <Latex :value="props.question.analysis" class="break-words" />
-        </div>
+        <Latex :value="props.question.analysis" class="overflow-x-auto py-2" />
       </div>
     </transition>
   </div>
