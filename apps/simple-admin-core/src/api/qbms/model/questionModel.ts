@@ -35,6 +35,7 @@ export interface QuestionInfo {
   analysisRenderType?: number;
   createdBy?: string;
   choice?: QuestionChoiceInfo[];
+  star?: boolean;
 }
 
 /**

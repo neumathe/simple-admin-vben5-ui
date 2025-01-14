@@ -1,10 +1,18 @@
 <script lang="ts" setup>
-import { computed, onBeforeUnmount, onMounted, type PropType, ref } from 'vue';
+import {
+  computed,
+  h,
+  onBeforeUnmount,
+  onMounted,
+  type PropType,
+  ref,
+} from 'vue';
 
 import { Icon } from '@iconify/vue';
 import { Button, Tooltip } from 'ant-design-vue';
 
 import { type QuestionInfo } from '#/api/qbms/model/questionModel';
+import { createStar, deleteStar } from '#/api/qbms/psStar';
 import { useQuestionConfig } from '#/store/questionConfig';
 
 import SingleChoice from './question/singleChoice.vue';
@@ -20,6 +28,37 @@ const props = defineProps({
   },
 });
 
+const star = ref(props.question.star);
+const staring = ref(false);
+const toggleStar = () => {
+  staring.value = true;
+  const startTime = Date.now();
+
+  const starPromise = star.value
+    ? deleteStar({
+        question: props.question.id,
+        subject: props.question.subjectId!,
+      }).then(() => {
+        star.value = !star.value;
+      })
+    : createStar({
+        question: props.question.id,
+        subject: props.question.subjectId!,
+      }).then(() => {
+        star.value = !star.value;
+      });
+
+  starPromise.finally(() => {
+    const elapsed = Date.now() - startTime;
+    const remainingTime = Math.max(500 - elapsed, 0);
+
+    setTimeout(() => {
+      staring.value = false;
+    }, remainingTime);
+  });
+};
+
+// 元素高度 计算高度过渡动画
 const container = ref(null);
 const content = ref(null);
 const animatedHeight = ref('auto');
@@ -27,7 +66,7 @@ let resizeObserver = null;
 
 const updateHeight = () => {
   if (content.value && container.value) {
-    const contentHeight = (content.value as HTMLElement).offsetHeight;
+    const contentHeight = (content.value as HTMLElement)?.offsetHeight;
     (container.value as HTMLElement).style.height = `${contentHeight}px`;
     setTimeout(() => {
       animatedHeight.value = 'auto';
@@ -35,7 +74,7 @@ const updateHeight = () => {
   }
 };
 
-// 获取屏幕宽度
+// 屏幕宽度
 const screenWidth = ref(window.innerWidth);
 
 const updateScreenWidth = () => {
@@ -45,7 +84,7 @@ const updateScreenWidth = () => {
 onMounted(() => {
   window.addEventListener('resize', updateScreenWidth); // 监听窗口变化
   resizeObserver = new ResizeObserver(() => {
-    animatedHeight.value = `${(content.value as unknown as HTMLElement).offsetHeight}px`;
+    animatedHeight.value = `${(content.value as unknown as HTMLElement)?.offsetHeight}px`;
     updateHeight();
   });
   if (content.value) {
@@ -151,21 +190,20 @@ const contentWidth = computed(() => {
               <Icon class="m-auto" icon="simple-line-icons:note" />
             </Button>
           </Tooltip>
-          <Tooltip v-if="!questionConfigStore.showAnalysis" title="收藏题目">
+          <Tooltip title="收藏题目">
             <Button
+              :icon="h(Icon, { icon: 'akar-icons:star' })"
+              :loading="staring"
               :style="{
-                backgroundColor: showAnalysis ? '#FF0000' : '#f0f0f0',
-                color: showAnalysis ? '#fff' : '#000',
+                backgroundColor: star ? '#FF0000' : '#f0f0f0',
+                color: star ? '#fff' : '#000',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
               }"
               shape="circle"
-              @click="
-                () => {
-                  showAnalysis = !showAnalysis;
-                }
-              "
-            >
-              <Icon class="m-auto" icon="raphael:star2off" />
-            </Button>
+              @click="toggleStar"
+            />
           </Tooltip>
           <Tooltip v-if="!questionConfigStore.showAnalysis" title="加入错题本">
             <Button
