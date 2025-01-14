@@ -20,6 +20,21 @@ const props = defineProps({
   },
 });
 
+const container = ref(null);
+const content = ref(null);
+const animatedHeight = ref('auto');
+let resizeObserver = null;
+
+const updateHeight = () => {
+  if (content.value && container.value) {
+    const contentHeight = (content.value as HTMLElement).offsetHeight;
+    (container.value as HTMLElement).style.height = `${contentHeight}px`;
+    setTimeout(() => {
+      animatedHeight.value = 'auto';
+    }, 500);
+  }
+};
+
 // 获取屏幕宽度
 const screenWidth = ref(window.innerWidth);
 
@@ -28,7 +43,16 @@ const updateScreenWidth = () => {
 };
 
 onMounted(() => {
-  window.addEventListener('resize', updateScreenWidth);
+  window.addEventListener('resize', updateScreenWidth); // 监听窗口变化
+  resizeObserver = new ResizeObserver(() => {
+    animatedHeight.value = `${(content.value as unknown as HTMLElement).offsetHeight}px`;
+    updateHeight();
+  });
+  if (content.value) {
+    resizeObserver.observe(content.value);
+    // 初始化高度
+    updateHeight();
+  }
 });
 
 onBeforeUnmount(() => {
@@ -61,149 +85,148 @@ const contentWidth = computed(() => {
 </script>
 <template>
   <div
+    ref="container"
     class="bg-card m-5 flex flex-col rounded-lg shadow-xl transition-[height] duration-500 ease-in-out"
-    style="
-      interpolate-size: allow-keywords;
-      height: auto;
-      transition: height 0.5s ease;
-    "
+    style="transition: height 0.5s ease"
   >
-    <!-- 头部操作区 -->
-    <div class="flex items-center justify-between px-4 py-3">
-      <!-- 左侧题目序号 -->
-      <div class="flex items-center">
-        <div
-          class="border-primary text-primary flex h-6 w-6 items-center justify-center rounded-full border-2"
-        >
-          {{ props.index }}
+    <div ref="content">
+      <!-- 头部操作区 -->
+      <div class="flex items-center justify-between px-4 py-3">
+        <!-- 左侧题目序号 -->
+        <div class="flex items-center">
+          <div
+            class="border-primary text-primary flex h-6 w-6 items-center justify-center rounded-full border-2"
+          >
+            {{ props.index }}
+          </div>
+        </div>
+        <!-- 右侧操作按钮 -->
+        <div class="flex space-x-2">
+          <!-- https://coolors.co/palette/ff0000-ff8700-ffd300-deff0a-a1ff0a-0aff99-0aefff-147df5-580aff-be0aff -->
+          <Tooltip v-if="!questionConfigStore.showAnalysis" title="展开解析">
+            <Button
+              :style="{
+                backgroundColor: showAnalysis ? '#DEFF0A' : '#f0f0f0',
+                color: showAnalysis ? '#fff' : '#000',
+              }"
+              shape="circle"
+              @click="
+                () => {
+                  showAnalysis = !showAnalysis;
+                }
+              "
+            >
+              <Icon class="m-auto" icon="lineicons:search" />
+            </Button>
+          </Tooltip>
+          <Tooltip v-if="!questionConfigStore.showComment" title="显示评论">
+            <Button
+              :style="{
+                backgroundColor: showComment ? '#A1FF0A' : '#f0f0f0',
+                color: showComment ? '#fff' : '#000',
+              }"
+              shape="circle"
+              @click="
+                () => {
+                  showComment = !showComment;
+                }
+              "
+            >
+              <Icon class="m-auto" icon="akar-icons:comment" />
+            </Button>
+          </Tooltip>
+          <Tooltip v-if="!questionConfigStore.showNote" title="显示笔记">
+            <Button
+              :style="{
+                backgroundColor: showNote ? '#0AFF99' : '#f0f0f0',
+                color: showNote ? '#fff' : '#000',
+              }"
+              shape="circle"
+              @click="
+                () => {
+                  showNote = !showNote;
+                }
+              "
+            >
+              <Icon class="m-auto" icon="simple-line-icons:note" />
+            </Button>
+          </Tooltip>
+          <Tooltip v-if="!questionConfigStore.showAnalysis" title="收藏题目">
+            <Button
+              :style="{
+                backgroundColor: showAnalysis ? '#FF0000' : '#f0f0f0',
+                color: showAnalysis ? '#fff' : '#000',
+              }"
+              shape="circle"
+              @click="
+                () => {
+                  showAnalysis = !showAnalysis;
+                }
+              "
+            >
+              <Icon class="m-auto" icon="raphael:star2off" />
+            </Button>
+          </Tooltip>
+          <Tooltip v-if="!questionConfigStore.showAnalysis" title="加入错题本">
+            <Button
+              :style="{
+                backgroundColor: showAnalysis ? '#FF8700' : '#f0f0f0',
+                color: showAnalysis ? '#fff' : '#000',
+              }"
+              shape="circle"
+              @click="
+                () => {
+                  showAnalysis = !showAnalysis;
+                }
+              "
+            >
+              <Icon class="m-auto" icon="material-symbols:add-notes-outline" />
+            </Button>
+          </Tooltip>
         </div>
       </div>
-      <!-- 右侧操作按钮 -->
-      <div class="flex space-x-2">
-        <!-- https://coolors.co/palette/ff0000-ff8700-ffd300-deff0a-a1ff0a-0aff99-0aefff-147df5-580aff-be0aff -->
-        <Tooltip v-if="!questionConfigStore.showAnalysis" title="展开解析">
-          <Button
-            :style="{
-              backgroundColor: showAnalysis ? '#DEFF0A' : '#f0f0f0',
-              color: showAnalysis ? '#fff' : '#000',
-            }"
-            shape="circle"
-            @click="
-              () => {
-                showAnalysis = !showAnalysis;
-              }
-            "
-          >
-            <Icon class="m-auto" icon="lineicons:search" />
-          </Button>
-        </Tooltip>
-        <Tooltip v-if="!questionConfigStore.showComment" title="显示评论">
-          <Button
-            :style="{
-              backgroundColor: showComment ? '#A1FF0A' : '#f0f0f0',
-              color: showComment ? '#fff' : '#000',
-            }"
-            shape="circle"
-            @click="
-              () => {
-                showComment = !showComment;
-              }
-            "
-          >
-            <Icon class="m-auto" icon="akar-icons:comment" />
-          </Button>
-        </Tooltip>
-        <Tooltip v-if="!questionConfigStore.showNote" title="显示笔记">
-          <Button
-            :style="{
-              backgroundColor: showNote ? '#0AFF99' : '#f0f0f0',
-              color: showNote ? '#fff' : '#000',
-            }"
-            shape="circle"
-            @click="
-              () => {
-                showNote = !showNote;
-              }
-            "
-          >
-            <Icon class="m-auto" icon="simple-line-icons:note" />
-          </Button>
-        </Tooltip>
-        <Tooltip v-if="!questionConfigStore.showAnalysis" title="收藏题目">
-          <Button
-            :style="{
-              backgroundColor: showAnalysis ? '#FF0000' : '#f0f0f0',
-              color: showAnalysis ? '#fff' : '#000',
-            }"
-            shape="circle"
-            @click="
-              () => {
-                showAnalysis = !showAnalysis;
-              }
-            "
-          >
-            <Icon class="m-auto" icon="raphael:star2off" />
-          </Button>
-        </Tooltip>
-        <Tooltip v-if="!questionConfigStore.showAnalysis" title="加入错题本">
-          <Button
-            :style="{
-              backgroundColor: showAnalysis ? '#FF8700' : '#f0f0f0',
-              color: showAnalysis ? '#fff' : '#000',
-            }"
-            shape="circle"
-            @click="
-              () => {
-                showAnalysis = !showAnalysis;
-              }
-            "
-          >
-            <Icon class="m-auto" icon="material-symbols:add-notes-outline" />
-          </Button>
-        </Tooltip>
-      </div>
-    </div>
-    <hr class="border-t" />
+      <hr class="border-t" />
 
-    <div class="flex flex-col xl:flex-row xl:divide-x">
-      <!-- 左侧元素 -->
-      <Transition name="element">
-        <div
-          v-if="questionConfigStore.showComment || showComment"
-          class="order-4 bg-blue-50 xl:order-none xl:w-1/4"
-        >
-          <div class="m-1 p-4">评论区域</div>
-        </div>
-      </Transition>
+      <div class="flex flex-col xl:flex-row xl:divide-x">
+        <!-- 左侧元素 -->
+        <Transition name="element">
+          <div
+            v-if="questionConfigStore.showComment || showComment"
+            class="order-4 bg-blue-50 xl:order-none xl:w-1/4"
+          >
+            <div class="m-1 p-4">评论区域</div>
+          </div>
+        </Transition>
 
-      <!-- 中间元素 -->
-      <div
-        :class="{
-          'xl:w-1/2': contentWidth === 2,
-          'xl:w-3/4': contentWidth === 1,
-          'xl:w-full': contentWidth === 0,
-        }"
-        class="order-2 mx-4 mb-6 max-w-full gap-4 border-none px-6 xl:order-none"
-        style="transition: width 0.5s ease"
-      >
-        <!-- 问题部分  QuestionType = 1 单选题 -->
-        <SingleChoice
-          v-if="props.question.questionType === 1"
-          :question="props.question"
-          :show-analysis="showAnalysis || questionConfigStore.showAnalysis"
-          :show-answer="questionConfigStore.showAnswer"
-          class="max-w-full gap-4 border-none xl:order-none"
-        />
-      </div>
-      <!-- 右侧元素 -->
-      <transition name="element">
+        <!-- 中间元素 -->
         <div
-          v-show="questionConfigStore.showNote || showNote"
-          class="order-3 border-none bg-red-50 xl:order-none xl:ml-auto xl:w-1/4"
+          :class="{
+            'xl:w-1/2': contentWidth === 2,
+            'xl:w-3/4': contentWidth === 1,
+            'xl:w-full': contentWidth === 0,
+          }"
+          class="order-2 mx-4 mb-6 max-w-full gap-4 border-none px-6 xl:order-none"
+          style="transition: width 0.5s ease"
         >
-          <div class="m-1 p-4" style="min-height: 400px">笔记区域</div>
+          <!-- 问题部分  QuestionType = 1 单选题 -->
+          <SingleChoice
+            v-if="props.question.questionType === 1"
+            :question="props.question"
+            :show-analysis="showAnalysis || questionConfigStore.showAnalysis"
+            :show-answer="questionConfigStore.showAnswer"
+            class="max-w-full gap-4 border-none xl:order-none"
+          />
         </div>
-      </transition>
+        <!-- 右侧元素 -->
+        <transition name="element">
+          <div
+            v-show="questionConfigStore.showNote || showNote"
+            class="order-3 border-none bg-red-50 xl:order-none xl:ml-auto xl:w-1/4"
+          >
+            <div class="m-1 p-4" style="min-height: 400px">笔记区域</div>
+          </div>
+        </transition>
+      </div>
     </div>
   </div>
 </template>
