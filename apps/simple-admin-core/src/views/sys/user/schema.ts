@@ -1,17 +1,14 @@
 import type { VxeGridProps } from '#/adapter/vxe-table';
-
-import { h } from 'vue';
-
-import { type VbenFormProps } from '@vben/common-ui';
-import { $t } from '@vben/locales';
-
-import { Switch } from 'ant-design-vue';
+import type { VbenFormProps } from '@vben/common-ui';
 
 import { z } from '#/adapter/form';
 import { getDepartmentList } from '#/api/sys/department';
 import { getPositionList } from '#/api/sys/position';
 import { getRoleList } from '#/api/sys/role';
 import { updateUser } from '#/api/sys/user';
+import { $t } from '@vben/locales';
+import { Switch } from 'ant-design-vue';
+import { h } from 'vue';
 
 export const tableColumns: VxeGridProps = {
   columns: [
@@ -151,7 +148,7 @@ export const dataFormSchemas: VbenFormProps = {
       fieldName: 'password',
       label: $t('sys.login.password'),
       component: 'Input',
-      rules: z.string().min(6).max(100),
+      rules: z.string().min(6).max(100).optional(),
     },
     {
       fieldName: 'roleIds',
