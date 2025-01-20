@@ -1,0 +1,17 @@
+{
+  "psOnlinePractice": {
+    "id": "Id",
+    "timeUsed": "TimeUsed",
+    "questionsCount": "QuestionsCount",
+    "subject": "Subject",
+    "type": "Type",
+    "submitedAt": "SubmitedAt",
+    "score": "Score",
+    "createdBy": "CreatedBy",
+    "createAt": "CreateAt",
+    "questions": "Questions",
+    "addPsOnlinePractice": "添加 PsOnlinePractice",
+    "editPsOnlinePractice": "编辑 PsOnlinePractice",
+    "psOnlinePracticeList": "PsOnlinePractice 列表"
+  }
+}

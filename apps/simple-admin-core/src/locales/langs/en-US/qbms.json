@@ -1,0 +1,17 @@
+{
+  "psOnlinePractice": {
+    "id": "Id",
+    "timeUsed": "TimeUsed",
+    "questionsCount": "QuestionsCount",
+    "subject": "Subject",
+    "type": "Type",
+    "submitedAt": "SubmitedAt",
+    "score": "Score",
+    "createdBy": "CreatedBy",
+    "createAt": "CreateAt",
+    "questions": "Questions",
+    "addPsOnlinePractice": "Add PsOnlinePractice",
+    "editPsOnlinePractice": "Edit PsOnlinePractice",
+    "psOnlinePracticeList": "PsOnlinePractice List"
+  }
+}

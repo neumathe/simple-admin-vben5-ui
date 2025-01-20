@@ -36,6 +36,7 @@ export interface QuestionInfo {
   createdBy?: string;
   choice?: QuestionChoiceInfo[];
   star?: boolean;
+  input?: string;
 }
 
 /**

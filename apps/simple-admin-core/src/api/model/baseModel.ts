@@ -34,3 +34,7 @@ export interface BaseUUIDReq {
 export interface BaseUUIDsReq {
   ids: string[];
 }
+
+export interface BaseIDResp {
+  id: number;
+}

@@ -65,7 +65,7 @@ onMounted(() => {
 <template>
   <div>
     <div v-for="(question, index) in questions" :key="question.id">
-      <Question :index="index + 1" :question="question" />
+      <Question :index="index + 1" :mode="1" :question="question" />
     </div>
     <div class="bg-card flex flex-col items-center p-5">
       <div

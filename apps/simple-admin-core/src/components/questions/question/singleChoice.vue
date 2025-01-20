@@ -28,7 +28,12 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  mode: {
+    type: Number,
+    default: 0,
+  },
 });
+const emits = defineEmits(['optionSelected']);
 
 const radioChoice = ref<number>(0);
 const shuffledChoices = ref<QuestionChoiceInfo[]>([]);
@@ -51,6 +56,10 @@ onMounted(() => {
     if (correctOption) {
       radioChoice.value = correctOption.id!;
     }
+  }
+
+  if (props.question.input) {
+    radioChoice.value = Number(props.question.input);
   }
 });
 
@@ -88,8 +97,9 @@ const columnClass = computed(() => {
 });
 
 function selectOption(optionId: number) {
-  if (!props.showAnswer) {
+  if (!props.showAnswer && props.mode !== 2) {
     radioChoice.value = optionId;
+    emits('optionSelected', optionId);
   }
 }
 
@@ -124,16 +134,30 @@ const isDisabled = computed(() => props.showAnswer);
         v-for="option in shuffledChoices"
         :key="option.id"
         :class="[
-          {
+          props.mode === 1 && {
             'border-success-600 text-success-600':
               radioChoice === option.id && option.isAnswer,
             'border-red-600 text-red-600':
               radioChoice === option.id && !option.isAnswer,
           },
+          props.mode === 11 && {
+            'border-primary-600 text-primary-600': radioChoice === option.id,
+          },
+          props.mode === 2 && {
+            'border-success-600 text-success-600':
+              (option.isAnswer && props.question.input === String(option.id)) ||
+              (props.question.input &&
+                props.question.input !== '' &&
+                option.isAnswer),
+            'border-red-600 text-red-600':
+              props.question.input === String(option.id),
+            'border-primary-600 text-primary-600':
+              !props.question.input && option.isAnswer,
+          },
         ]"
         :for="`option-${option.id}`"
         class="flex cursor-pointer items-center gap-3 overflow-x-auto rounded-md border p-3 transition-all duration-200"
-        @click="
+        @click.prevent="
           !isDisabled && option.id !== undefined && selectOption(option.id)
         "
       >
