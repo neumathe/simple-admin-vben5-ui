@@ -1,5 +1,5 @@
-import { type BaseListResp } from '../../model/baseModel';
-
+import type { NoteInfo } from '../../community/model/note';
+import type { BaseListResp } from '../../model/baseModel';
 /**
  *  @description: QuestionChoice info response
  */
@@ -37,6 +37,7 @@ export interface QuestionInfo {
   choice?: QuestionChoiceInfo[];
   star?: boolean;
   input?: string;
+  note?: NoteInfo;
 }
 
 /**

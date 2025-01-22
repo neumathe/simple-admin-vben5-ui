@@ -2,11 +2,6 @@
 import type { ChapterInfo } from '#/api/qbms/model/psChapterModel';
 import type { QuestionInfo } from '#/api/qbms/model/questionModel';
 
-import { onMounted, ref, watch } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
-
-import { Button, Pagination } from 'ant-design-vue';
-
 import {
   fetchAndTransformChapterList,
   findSiblingLeafNodes,
@@ -14,6 +9,9 @@ import {
 import { getQuestionList } from '#/api/qbms/question';
 import { FloatSetting } from '#/components/configuration';
 import Question from '#/components/questions/question.vue';
+import { Button, Pagination } from 'ant-design-vue';
+import { onMounted, ref, watch } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 
 defineOptions({
   name: 'SequentialPractice',
@@ -65,7 +63,7 @@ onMounted(() => {
 <template>
   <div>
     <div v-for="(question, index) in questions" :key="question.id">
-      <Question :index="index + 1" :mode="1" :question="question" />
+      <Question :index="index" :mode="1" :question="question" />
     </div>
     <div class="bg-card flex flex-col items-center p-5">
       <div

@@ -1,19 +1,13 @@
 <script lang="ts" setup>
-import {
-  computed,
-  h,
-  onBeforeUnmount,
-  onMounted,
-  type PropType,
-  ref,
-} from 'vue';
+import type { QuestionInfo } from '#/api/qbms/model/questionModel';
+import type { PropType } from 'vue';
 
+import { createStar, deleteStar } from '#/api/qbms/psStar';
+import { Note } from '#/components/note/';
+import { useQuestionConfig } from '#/store/questionConfig';
 import { Icon } from '@iconify/vue';
 import { Button, Tooltip } from 'ant-design-vue';
-
-import { type QuestionInfo } from '#/api/qbms/model/questionModel';
-import { createStar, deleteStar } from '#/api/qbms/psStar';
-import { useQuestionConfig } from '#/store/questionConfig';
+import { computed, h, onBeforeUnmount, onMounted, ref } from 'vue';
 
 import SingleChoice from './question/singleChoice.vue';
 
@@ -301,9 +295,17 @@ const contentWidth = computed(() => {
               ((questionConfigStore.showNote || showNote) && props.mode < 10) ||
               (props.mode >= 10 && showNote)
             "
-            class="order-3 border-none bg-red-50 xl:order-none xl:ml-auto xl:w-1/4"
+            class="order-3 border-none xl:order-none xl:ml-auto xl:w-1/4"
           >
-            <div class="m-1 p-4" style="min-height: 400px">笔记区域</div>
+            <div
+              class="h-full max-h-[650px] overflow-y-auto border-t xl:border-none"
+            >
+              <Note
+                :note="props.question.note"
+                :question="props.question.id!"
+                :subject="props.question.subjectId!"
+              />
+            </div>
           </div>
         </transition>
       </div>

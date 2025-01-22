@@ -1,9 +1,8 @@
 <script lang="ts" setup>
-import { type PropType } from 'vue';
-
-import { MathpixMarkdownModel as MM } from 'mathpix-markdown-it';
+import type { PropType } from 'vue';
 
 import { useQuestionConfig } from '#/store/questionConfig';
+import { MathpixMarkdownModel as MM } from 'mathpix-markdown-it';
 
 const props = defineProps({
   value: {
@@ -132,7 +131,7 @@ function processHtml(html: string | undefined) {
   </div>
 </template>
 
-<style>
+<style scoped>
 .font-chinese {
   font-family: SimSun, serif;
 }

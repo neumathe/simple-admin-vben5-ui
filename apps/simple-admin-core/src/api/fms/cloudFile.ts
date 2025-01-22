@@ -1,16 +1,14 @@
-import {
-  type BaseDataResp,
-  type BaseListReq,
-  type BaseResp,
-  type BaseUUIDReq,
-  type BaseUUIDsReq,
+import type {
+  BaseDataResp,
+  BaseListReq,
+  BaseResp,
+  BaseUUIDReq,
+  BaseUUIDsReq,
 } from '#/api/model/baseModel';
-import { requestClient } from '#/api/request';
 
-import {
-  type CloudFileInfo,
-  type CloudFileListResp,
-} from './model/cloudFileModel';
+import type { CloudFileInfo, CloudFileListResp } from './model/cloudFileModel';
+
+import { requestClient } from '#/api/request';
 
 enum Api {
   CreateCloudFile = '/fms-api/cloud_file/create',
@@ -66,6 +64,10 @@ export const getCloudFileById = (params: BaseUUIDReq) => {
 /**
  * @description: Upload interface
  */
-export function uploadCloudFile(file: File, provider: string = '') {
-  return requestClient.upload(Api.uploadFile, { file, provider });
+export function uploadCloudFile(
+  file: File,
+  provider: string = '',
+  tagId: number[] = [],
+) {
+  return requestClient.upload(Api.uploadFile, { file, provider, tagId });
 }
