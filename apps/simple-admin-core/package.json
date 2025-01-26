@@ -53,6 +53,7 @@
     "@wangeditor-next/editor-for-vue": "catalog:",
     "ant-design-vue": "catalog:",
     "dayjs": "catalog:",
+    "install": "^0.13.0",
     "mathpix-markdown-it": "2.0.1",
     "md-editor-v3": "^5.2.1",
     "patch-package": "^8.0.0",
@@ -62,7 +63,8 @@
     "vue": "catalog:",
     "vue-codemirror": "catalog:",
     "vue-dompurify-html": "^5.2.0",
-    "vue-router": "catalog:"
+    "vue-router": "catalog:",
+    "vue3-emoji-picker": "^1.1.8"
   },
   "devDependencies": {
     "@locator/runtime": "^0.4.4"

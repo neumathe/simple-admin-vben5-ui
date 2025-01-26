@@ -3,6 +3,7 @@ import type { QuestionInfo } from '#/api/qbms/model/questionModel';
 import type { PropType } from 'vue';
 
 import { createStar, deleteStar } from '#/api/qbms/psStar';
+import { Comment } from '#/components/comment/';
 import { Note } from '#/components/note/';
 import { useQuestionConfig } from '#/store/questionConfig';
 import { Icon } from '@iconify/vue';
@@ -54,7 +55,7 @@ const toggleStar = () => {
 
   starPromise.finally(() => {
     const elapsed = Date.now() - startTime;
-    const remainingTime = Math.max(500 - elapsed, 0);
+    const remainingTime = Math.max(100 - elapsed, 0);
 
     setTimeout(() => {
       staring.value = false;
@@ -137,7 +138,6 @@ const contentWidth = computed(() => {
   <div
     ref="container"
     class="bg-card m-5 flex flex-col rounded-lg shadow-xl transition-[height] duration-500 ease-in-out"
-    style="transition: height 0.5s ease"
   >
     <div ref="content">
       <!-- 头部操作区 -->
@@ -257,9 +257,16 @@ const contentWidth = computed(() => {
               (questionConfigStore.showComment || showComment) &&
               props.mode < 10
             "
-            class="order-4 bg-blue-50 xl:order-none xl:w-1/4"
+            class="order-4 m-1 p-4 xl:order-none xl:w-1/4"
           >
-            <div class="m-1 p-4">评论区域</div>
+            <div
+              class="h-full max-h-[650px] overflow-y-auto border-t xl:border-none"
+            >
+              <Comment
+                :question="props.question.id!"
+                :subject="props.question.subjectId!"
+              />
+            </div>
           </div>
         </Transition>
 

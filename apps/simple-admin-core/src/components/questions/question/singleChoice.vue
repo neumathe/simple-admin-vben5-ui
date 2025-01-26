@@ -1,17 +1,11 @@
 <script lang="ts" setup>
-import {
-  computed,
-  onBeforeUnmount,
-  onMounted,
-  type PropType,
-  ref,
-  watch,
-} from 'vue';
-
-import {
-  type QuestionChoiceInfo,
-  type QuestionInfo,
+import type {
+  QuestionChoiceInfo,
+  QuestionInfo,
 } from '#/api/qbms/model/questionModel';
+import type { PropType } from 'vue';
+
+import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 
 import Latex from './template/latex.vue';
 
@@ -122,6 +116,33 @@ watch(
 
 // Disable interaction when showAnswer is true
 const isDisabled = computed(() => props.showAnswer);
+
+const beforeEnter = (el: any) => {
+  el.style.height = '0';
+  el.style.opacity = '0';
+};
+
+const enter = (el: any, done: () => void) => {
+  const height = el.scrollHeight + 2;
+  el.style.height = `${height}px`;
+  el.style.opacity = '1';
+  el.style.transition = 'height 0.5s ease, opacity 0.5s ease';
+  el.addEventListener('transitionend', () => {
+    el.style.height = 'auto';
+    done();
+  });
+};
+
+const leave = (el: any, done: () => void) => {
+  el.style.height = `${el.scrollHeight + 2}px`;
+  el.style.opacity = '1';
+  requestAnimationFrame(() => {
+    el.style.height = '0';
+    el.style.opacity = '0';
+    el.style.transition = 'height 0.5s ease, opacity 0.5s ease';
+    el.addEventListener('transitionend', done);
+  });
+};
 </script>
 
 <template>
@@ -175,7 +196,12 @@ const isDisabled = computed(() => props.showAnswer);
       </label>
     </div>
 
-    <transition name="analysis">
+    <transition
+      name="analysis"
+      @before-enter="beforeEnter"
+      @enter="enter"
+      @leave="leave"
+    >
       <div v-show="props.showAnalysis">
         <Latex :value="props.question.analysis" class="overflow-x-auto py-2" />
       </div>
@@ -187,20 +213,5 @@ const isDisabled = computed(() => props.showAnswer);
 .analysis-enter-active,
 .analysis-leave-active {
   overflow: hidden;
-  transition:
-    height 0.5s ease,
-    opacity 0.5s ease;
-}
-
-.analysis-enter-from,
-.analysis-leave-to {
-  height: 0;
-  opacity: 0;
-}
-
-.analysis-enter-to,
-.analysis-leave-from {
-  height: auto;
-  opacity: 1;
 }
 </style>

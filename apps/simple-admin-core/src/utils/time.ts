@@ -4,6 +4,7 @@ export function dateStr(unix: number) {
   let time = Date.now();
   // 去掉 js 时间戳后三位
   time = Math.floor((time - date.getTime()) / 1000);
+
   // 存储转换值
   let s;
   if (time < 60 * 3) {

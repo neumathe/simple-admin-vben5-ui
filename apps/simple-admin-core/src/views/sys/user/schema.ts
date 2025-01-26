@@ -25,6 +25,10 @@ export const tableColumns: VxeGridProps = {
       field: 'email',
     },
     {
+      title: $t('sys.login.mobile'),
+      field: 'mobile',
+    },
+    {
       title: $t('common.status'),
       field: 'status',
       slots: {
@@ -88,6 +92,7 @@ export const searchFormSchemas: VbenFormProps = {
     },
   ],
 };
+const phoneRegex = /^1[3-9]\d{9}$/;
 
 export const dataFormSchemas: VbenFormProps = {
   schema: [
@@ -133,10 +138,10 @@ export const dataFormSchemas: VbenFormProps = {
       help: $t('sys.role.defaultRouterHelpMessage'),
     },
     {
-      fieldName: 'mobile',
       label: $t('sys.login.mobile'),
+      fieldName: 'mobile',
       component: 'Input',
-      rules: z.string().max(20).optional(),
+      rules: z.string().regex(phoneRegex, '请输入有效的手机号码'),
     },
     {
       fieldName: 'email',

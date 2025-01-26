@@ -3,20 +3,36 @@ import type { NoteInfo } from '#/api/community/model/note';
 import type { ExposeParam } from 'md-editor-v3';
 import type { PropType } from 'vue';
 
-import { createNote, updateNote } from '#/api/community/note';
+import {
+  createNote,
+  deleteNoteC,
+  likeNote,
+  listMoreNote,
+  updateNote,
+} from '#/api/community/note';
 import { uploadCloudFile } from '#/api/fms/cloudFile';
+import { User } from '#/components/user';
 import { dateStr } from '#/utils/time';
 import Icon, {
+  LoadingOutlined,
   LockOutlined,
   PlusOutlined,
+  QuestionCircleOutlined,
   SearchOutlined,
   UnlockOutlined,
 } from '@ant-design/icons-vue';
 import { Emoji, Mark } from '@vavt/v3-extension';
 import { usePreferences } from '@vben/preferences';
-import { Button, message, Modal } from 'ant-design-vue';
+import {
+  Button,
+  message,
+  Modal,
+  Pagination,
+  Popconfirm,
+  Spin,
+} from 'ant-design-vue';
 import { MdEditor, MdPreview } from 'md-editor-v3';
-import { h, onMounted, reactive, ref } from 'vue';
+import { h, onMounted, reactive, ref, watch } from 'vue';
 
 import { toolbars } from './staticConfig';
 
@@ -38,6 +54,13 @@ const props = defineProps({
   },
 });
 
+const indicator = h(LoadingOutlined, {
+  style: {
+    fontSize: '24px',
+  },
+  spin: true,
+});
+
 const state = reactive({
   text: '',
   modalVisible: false,
@@ -54,6 +77,11 @@ const id = `note-editor-p${props.question}`;
 //   id: 1,
 // };
 const isEdit = ref(false);
+const isMore = ref(false);
+const isLoadingMore = ref(false);
+const MoreNoteList = ref<NoteInfo[]>([]);
+const MoreNoteTotal = ref(0);
+const MoreNotePage = ref(1);
 const { isDark, isMobile } = usePreferences();
 
 const editorId = `note-editor${props.question}`;
@@ -117,6 +145,27 @@ const showEditor = () => {
   }, 100);
 };
 
+const showMore = () => {
+  isMore.value = true;
+  isLoadingMore.value = true;
+  listMoreNote({
+    question: props.question,
+    subject: props.subject,
+    page: MoreNotePage.value,
+    pageSize: 10,
+  })
+    .then((res) => {
+      if (res.code === 0) {
+        MoreNoteList.value = res.data.data;
+        MoreNoteTotal.value = res.data.total;
+        isLoadingMore.value = false;
+      }
+    })
+    .finally(() => {
+      isLoadingMore.value = false;
+    });
+};
+
 const onSave = () => {
   if (state.text === '') {
     message.error('笔记内容为空');
@@ -128,7 +177,7 @@ const onSave = () => {
       content: state.text,
       question: props.question,
       subject: props.subject,
-      published: Note.value?.published,
+      published: Note.value?.published ?? true,
     }).then((res) => {
       if (res.code === 0) {
         message.success('保存成功');
@@ -148,10 +197,100 @@ const onSave = () => {
     });
   }
 };
+
+const deleteNote = () => {
+  if (Note.value === null || Note.value.id === undefined) {
+    return;
+  }
+
+  deleteNoteC({
+    id: Note.value.id,
+  }).then((res) => {
+    if (res.code === 0) {
+      message.success('删除成功');
+      Note.value = {
+        content: undefined,
+        id: undefined,
+        createdAt: undefined,
+        editedAt: undefined,
+        like: undefined,
+        likeType: undefined,
+        published: undefined,
+        user: undefined,
+      };
+    }
+  });
+};
+
+const like = (id: number, likeType: number) => {
+  likeNote({
+    id,
+    likeType,
+  }).then((res) => {
+    if (res.code === 0) {
+      for (const item of MoreNoteList.value) {
+        if (item.id === id) {
+          if (likeType === 1 && item.likeType !== 1) {
+            if (item.like) {
+              item.like += 1;
+            } else {
+              item.like = 1;
+            }
+          } else if (likeType !== 1 && item.likeType === 1 && item.like) {
+            item.like -= 1;
+          }
+          item.likeType = likeType;
+        }
+      }
+    }
+  });
+};
+
+const changeIsPublished = () => {
+  if (Note.value === null) {
+    Note.value = { published: true };
+  } else if (Note.value.published === null) {
+    Note.value.published = true;
+  } else {
+    Note.value.published = !Note.value.published;
+    if (Note.value.id) {
+      updateNote({
+        id: Note.value.id,
+        published: Note.value.published,
+      }).then((res) => {
+        if (res.code === 0) {
+          message.success('保存成功');
+          Note.value = res.data;
+        }
+      });
+    }
+  }
+};
+
+watch(MoreNotePage, () => {
+  isLoadingMore.value = true;
+  MoreNoteList.value = [];
+  listMoreNote({
+    question: props.question,
+    subject: props.subject,
+    page: MoreNotePage.value,
+    pageSize: 10,
+  })
+    .then((res) => {
+      if (res.code === 0) {
+        MoreNoteList.value = res.data.data;
+        MoreNoteTotal.value = res.data.total;
+        isLoadingMore.value = false;
+      }
+    })
+    .finally(() => {
+      isLoadingMore.value = false;
+    });
+});
 </script>
 
 <template>
-  <div v-if="Note === null">
+  <div v-if="Note === null || Note.id === undefined">
     <div class="m-1 p-4">
       暂无笔记
       <div class="flex h-[100px] items-center justify-center space-x-4">
@@ -163,7 +302,11 @@ const onSave = () => {
           创建笔记
         </Button>
         <span>或</span>
-        <Button :icon="h(SearchOutlined)" class="flex items-center space-x-2">
+        <Button
+          :icon="h(SearchOutlined)"
+          class="flex items-center space-x-2"
+          @click="showMore"
+        >
           查看更多
         </Button>
       </div>
@@ -176,25 +319,42 @@ const onSave = () => {
       :theme="isDark ? 'dark' : 'light'"
     />
     <div
-      class="flex items-center justify-between space-x-2 p-4"
-      style="margin-top: auto; color: hsl(var(--secondary-foreground))"
+      class="text-secondary-foreground mt-auto flex flex-wrap items-center space-y-2 p-4 xl:space-y-0"
     >
       <!-- 左侧内容 -->
-      <div>
-        <span v-if="Note.updatedAt && Note.updatedAt !== Note.createdAt">
-          编辑于： {{ dateStr(Note.updatedAt) }}
+      <div class="flex flex-grow items-center space-x-2">
+        <span
+          v-if="
+            Note.editedAt &&
+            Note.editedAt > 0 &&
+            Note.editedAt !== Note.createdAt
+          "
+        >
+          编辑于：{{ dateStr(Note.editedAt) }}
         </span>
-        <span v-else>发布于： {{ dateStr(Note.createdAt!) }}</span>
-        <span class="px-1"></span>
-        <span> 赞({{ Note.like }}) </span>
+        <span v-else>发布于：{{ dateStr(Note.createdAt!) }}</span>
+        <span>赞({{ Note.like }})</span>
       </div>
 
       <!-- 右侧按钮 -->
-      <div class="flex space-x-2">
+      <div class="flex w-full space-x-2 xl:w-auto xl:justify-end">
         <a class="flex items-center space-x-2" type="link" @click="showEditor">
           编辑
         </a>
-        <a class="flex items-center space-x-2" type="link" @click="showEditor">
+        <Popconfirm
+          cancel-text="取消"
+          ok-text="确定"
+          title="此操作将同时删除笔记下所有评论且不可恢复，确定删除笔记？"
+          @confirm="deleteNote"
+        >
+          <template #icon>
+            <QuestionCircleOutlined style="color: red" />
+          </template>
+
+          <a class="flex items-center space-x-2" href="#" type="link"> 删除 </a>
+        </Popconfirm>
+
+        <a class="flex items-center space-x-2" type="link" @click="showMore">
           更多笔记
         </a>
       </div>
@@ -221,16 +381,11 @@ const onSave = () => {
         <div
           class="md-editor-toolbar-item"
           title="是否公开"
-          @click="
-            message.warn('切换公开状态后请点击保存');
-            Note.published !== null
-              ? (Note.published = !Note.published)
-              : (Note.published = true);
-          "
+          @click="changeIsPublished"
         >
           <Icon style="width: 16px; height: 16px; margin: 4px">
             <template #component>
-              <LockOutlined v-if="!!!Note.published" />
+              <LockOutlined v-if="Note && !!!Note.published" />
               <UnlockOutlined v-else />
             </template>
           </Icon>
@@ -238,6 +393,116 @@ const onSave = () => {
       </template>
     </MdEditor>
     <span style="color: hsl(var(--secondary-foreground))"></span>
+  </Modal>
+  <Modal v-model:open="isMore" :footer="null" title="更多笔记" width="80%">
+    <Spin :indicator="indicator" :spinning="isLoadingMore">
+      <div v-if="isLoadingMore" class="h-[400px] w-full"></div>
+      <div v-if="MoreNoteList.length === 0 && !isLoadingMore">暂无笔记...</div>
+      <div v-else>
+        <div class="grid grid-cols-1 divide-y">
+          <div v-for="n in MoreNoteList" :key="n.id" class="mt-4 pt-2">
+            <User :user="n.user" />
+            <MdPreview
+              :editor-id="`more-previce${n.id}`"
+              :model-value="n.content"
+              :theme="isDark ? 'dark' : 'light'"
+            />
+            <div class="text-secondary-foreground">
+              <span
+                v-if="
+                  n.editedAt && n.editedAt > 0 && n.editedAt !== n.createdAt
+                "
+              >
+                编辑于： {{ dateStr(n.editedAt) }}
+              </span>
+              <span v-else>发布于： {{ dateStr(n.createdAt!) }}</span>
+            </div>
+            <div class="flex items-center space-x-2 pt-2">
+              <!-- 赞同按钮 -->
+              <button
+                :class="
+                  n.likeType === 1
+                    ? 'bg-primary-500 hover:bg-primary-300 text-white'
+                    : 'bg-primary-100 hover:bg-primary-300 text-primary-500'
+                "
+                aria-label="赞同"
+                class="flex items-center rounded px-4 py-2 transition"
+                type="button"
+                @click="() => like(n.id!, n.likeType === 1 ? 0 : 1)"
+              >
+                <svg
+                  class="mr-1 h-3 w-3"
+                  fill="currentColor"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    clip-rule="evenodd"
+                    d="M13.792 3.681c-.781-1.406-2.803-1.406-3.584 0l-7.79 14.023c-.76 1.367.228 3.046 1.791 3.046h15.582c1.563 0 2.55-1.68 1.791-3.046l-7.79-14.023Z"
+                    fill-rule="evenodd"
+                  />
+                </svg>
+                <span v-if="n.likeType === 1">已</span>赞同 {{ n.like }}
+              </button>
+
+              <!-- 反对按钮 -->
+              <button
+                :class="
+                  n.likeType === -1
+                    ? 'bg-primary-400 hover:bg-primary-100 text-primary-700'
+                    : 'bg-primary-100 hover:bg-primary-300 text-primary-500'
+                "
+                aria-label="反对"
+                class="text-primary-500 flex items-center rounded px-2 py-[13px] transition hover:bg-gray-100"
+                type="button"
+                @click="() => like(n.id!, -1)"
+              >
+                <svg
+                  class="mr-1 h-3 w-3"
+                  fill="currentColor"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    clip-rule="evenodd"
+                    d="M13.792 20.319c-.781 1.406-2.803 1.406-3.584 0L2.418 6.296c-.76-1.367.228-3.046 1.791-3.046h15.582c1.563 0 2.55 1.68 1.791 3.046l-7.79 14.023Z"
+                    fill-rule="evenodd"
+                  />
+                </svg>
+              </button>
+
+              <!-- 评论按钮 -->
+              <button
+                class="hover:text-primary-500 flex items-center rounded px-4 py-2 text-gray-600 transition hover:bg-gray-100"
+                type="button"
+              >
+                <svg
+                  class="mr-1 h-3 w-3"
+                  fill="currentColor"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    clip-rule="evenodd"
+                    d="M12 2.75a9.25 9.25 0 1 0 4.737 17.197l2.643.817a1 1 0 0 0 1.25-1.25l-.8-2.588A9.25 9.25 0 0 0 12 2.75Z"
+                    fill-rule="evenodd"
+                  />
+                </svg>
+                1,270 条评论
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="mt-4 flex justify-center">
+          <Pagination
+            v-model:current="MoreNotePage"
+            :show-quick-jumper="false"
+            :show-size-changer="false"
+            :total="MoreNoteTotal"
+          />
+        </div>
+      </div>
+    </Spin>
   </Modal>
 </template>
 
@@ -253,7 +518,7 @@ svg.md-editor-icon {
 }
 
 :root {
-  --secondary-foreground: 240 6% 10%;
+  --secondary-foreground: 220 5% 66% / 80%;
 }
 
 .dark,
