@@ -1,18 +1,14 @@
+import type { BaseDataResp, BaseIDReq, BaseResp } from '#/api/model/baseModel';
 import type { ApiListResp } from '#/api/sys/model/apiModel';
 
-import {
-  type BaseDataResp,
-  type BaseIDReq,
-  type BaseResp,
-} from '#/api/model/baseModel';
-import { requestClient } from '#/api/request';
-
-import {
-  type ApiAuthorityReq,
-  type ApiAuthorityResp,
-  type ApiListReq,
-  type MenuAuthorityInfo,
+import type {
+  ApiAuthorityReq,
+  ApiAuthorityResp,
+  ApiListReq,
+  MenuAuthorityInfo,
 } from './model/authorityModel';
+
+import { requestClient } from '#/api/request';
 
 enum Api {
   CreateOrUpdateApiAuthority = '/sys-api/authority/api/create_or_update',

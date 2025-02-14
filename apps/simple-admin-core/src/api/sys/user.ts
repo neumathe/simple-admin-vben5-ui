@@ -1,28 +1,28 @@
-import { requestClient } from '#/api/request';
-
-import {
-  type BaseDataResp,
-  type BaseListReq,
-  type BaseResp,
-  type BaseUUIDReq,
-  type BaseUUIDsReq,
+import type {
+  BaseDataResp,
+  BaseListReq,
+  BaseResp,
+  BaseUUIDReq,
+  BaseUUIDsReq,
 } from '../model/baseModel';
-import {
-  type ChangePasswordReq,
-  type GetUserInfoModel,
-  type LoginByEmailReq,
-  type LoginBySmsReq,
-  type LoginReq,
-  type LoginResp,
-  type RegisterByEmailReq,
-  type RegisterBySmsReq,
-  type RegisterReq,
-  type ResetByEmailInfo,
-  type ResetBySmsInfo,
-  type UserInfo,
-  type UserListResp,
-  type UserProfile,
+import type {
+  ChangePasswordReq,
+  GetUserInfoModel,
+  LoginByEmailReq,
+  LoginBySmsReq,
+  LoginReq,
+  LoginResp,
+  RegisterByEmailReq,
+  RegisterBySmsReq,
+  RegisterReq,
+  ResetByEmailInfo,
+  ResetBySmsInfo,
+  UserInfo,
+  UserListResp,
+  UserProfile,
 } from './model/userModel';
+
+import { requestClient } from '#/api/request';
 
 enum Api {
   ChangePassword = '/sys-api/user/change_password',

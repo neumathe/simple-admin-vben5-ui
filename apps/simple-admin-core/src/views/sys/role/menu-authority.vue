@@ -1,19 +1,16 @@
 <script lang="ts" setup>
 import type { DataNode } from 'ant-design-vue/es/vc-tree/interface';
 
-import { ref } from 'vue';
-
-import { useVbenModal } from '@vben/common-ui';
-import { $t } from '@vben/locales';
-
-import { message, Tree } from 'ant-design-vue';
-
 import {
   createOrUpdateMenuAuthority,
   getMenuAuthority,
 } from '#/api/sys/authority';
 import { getMenuList } from '#/api/sys/menu';
 import { buildDataNode } from '#/utils/tree';
+import { useVbenModal } from '@vben/common-ui';
+import { $t } from '@vben/locales';
+import { message, Tree } from 'ant-design-vue';
+import { ref } from 'vue';
 
 defineOptions({
   name: 'MenuAuthorityModal',

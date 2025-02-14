@@ -1,16 +1,17 @@
-import {
-  type BaseDataResp,
-  type BaseIDReq,
-  type BaseIDsReq,
-  type BaseListReq,
-  type BaseResp,
+import type {
+  BaseDataResp,
+  BaseIDReq,
+  BaseIDsReq,
+  BaseListReq,
+  BaseResp,
 } from '#/api/model/baseModel';
-import { requestClient } from '#/api/request';
 
-import {
-  type OauthProviderInfo,
-  type OauthProviderListResp,
+import type {
+  OauthProviderInfo,
+  OauthProviderListResp,
 } from '../sys/model/oauthProviderModel';
+
+import { requestClient } from '#/api/request';
 
 enum Api {
   CreateOauthProvider = '/mms-api/oauth_provider/create',

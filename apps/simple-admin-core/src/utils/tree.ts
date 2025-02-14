@@ -1,7 +1,7 @@
 import type { Recordable } from '@vben/types';
+import type { DataNode } from 'ant-design-vue/es/vc-tree/interface';
 
 import { array2tree } from '@axolo/tree-array';
-import { type DataNode } from 'ant-design-vue/es/vc-tree/interface';
 import { forEachObj, map, pick } from 'remeda';
 
 export interface buildNodeOption {

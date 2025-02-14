@@ -1,12 +1,9 @@
 <script lang="ts" setup>
-import { ref } from 'vue';
-
-import { Page } from '@vben/common-ui';
-
-import { Select, SelectOption, Tree } from 'ant-design-vue';
-
 import { fetchAndTransformChapterList } from '#/api/qbms/psChapter';
 import { getPsSubjectList } from '#/api/qbms/psSubject';
+import { Page } from '@vben/common-ui';
+import { Select, SelectOption, Tree } from 'ant-design-vue';
+import { ref } from 'vue';
 
 defineOptions({
   name: 'ChapterManagement',

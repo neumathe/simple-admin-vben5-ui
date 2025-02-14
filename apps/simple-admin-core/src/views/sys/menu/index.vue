@@ -1,17 +1,15 @@
 <script lang="ts" setup>
 import type { VxeGridProps } from '#/adapter/vxe-table';
-
-import { h } from 'vue';
-
-import { Page, useVbenModal } from '@vben/common-ui';
-import { $t } from '@vben/locales';
-
-import { Button } from 'ant-design-vue';
-import { isPlainObject } from 'remeda';
+import type { ActionItem } from '#/components/table/table-action';
 
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import { deleteMenu, getMenuList } from '#/api/sys/menu';
-import { type ActionItem, TableAction } from '#/components/table/table-action';
+import { TableAction } from '#/components/table/table-action';
+import { Page, useVbenModal } from '@vben/common-ui';
+import { $t } from '@vben/locales';
+import { Button } from 'ant-design-vue';
+import { isPlainObject } from 'remeda';
+import { h } from 'vue';
 
 import MenuForm from './form.vue';
 import { tableColumns } from './schemas';

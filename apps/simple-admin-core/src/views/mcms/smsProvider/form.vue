@@ -1,15 +1,12 @@
 <script lang="ts" setup>
 import type { SmsProviderInfo } from '#/api/mcms/model/smsProviderModel';
 
-import { ref } from 'vue';
-
-import { useVbenModal } from '@vben/common-ui';
-import { $t } from '@vben/locales';
-
-import { message } from 'ant-design-vue';
-
 import { useVbenForm } from '#/adapter/form';
 import { createSmsProvider, updateSmsProvider } from '#/api/mcms/smsProvider';
+import { useVbenModal } from '@vben/common-ui';
+import { $t } from '@vben/locales';
+import { message } from 'ant-design-vue';
+import { ref } from 'vue';
 
 import { dataFormSchemas } from './schemas';
 

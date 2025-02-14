@@ -1,16 +1,17 @@
-import {
-  type BaseDataResp,
-  type BaseIDReq,
-  type BaseIDsReq,
-  type BaseListReq,
-  type BaseResp,
+import type {
+  BaseDataResp,
+  BaseIDReq,
+  BaseIDsReq,
+  BaseListReq,
+  BaseResp,
 } from '#/api/model/baseModel';
-import { requestClient } from '#/api/request';
 
-import {
-  type DepartmentInfo,
-  type DepartmentListResp,
+import type {
+  DepartmentInfo,
+  DepartmentListResp,
 } from './model/departmentModel';
+
+import { requestClient } from '#/api/request';
 
 enum Api {
   CreateDepartment = '/sys-api/department/create',

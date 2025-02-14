@@ -17,6 +17,7 @@ export interface NoteInfo {
   published?: boolean;
   likeType?: number;
   user?: UserInfo;
+  replies?: number;
 }
 
 export interface NoteListReq {
@@ -31,4 +32,4 @@ export interface likeNoteReq {
   likeType: number;
 }
 
-export type TokenListResp = BaseListResp<NoteInfo>;
+export type ListNoteResp = BaseListResp<NoteInfo>;

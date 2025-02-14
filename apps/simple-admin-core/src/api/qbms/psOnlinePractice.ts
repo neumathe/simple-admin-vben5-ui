@@ -1,20 +1,21 @@
-import {
-  type BaseDataResp,
-  type BaseIDReq,
-  type BaseIDResp,
-  type BaseIDsReq,
-  type BaseListReq,
-  type BaseResp,
+import type {
+  BaseDataResp,
+  BaseIDReq,
+  BaseIDResp,
+  BaseIDsReq,
+  BaseListReq,
+  BaseResp,
 } from '#/api/model/baseModel';
-import { requestClient } from '#/api/request';
 
-import {
-  type CreateOnlinePracticeReq,
-  type PsOnlinePracticeInfo,
-  type PsOnlinePracticeListResp,
-  type SubmitPracticeReq,
-  type SubmitPracticeResp,
+import type {
+  CreateOnlinePracticeReq,
+  PsOnlinePracticeInfo,
+  PsOnlinePracticeListResp,
+  SubmitPracticeReq,
+  SubmitPracticeResp,
 } from './model/psOnlinePracticeModel';
+
+import { requestClient } from '#/api/request';
 
 enum Api {
   CreatePsOnlinePractice = '/question-api/online_practice/create',

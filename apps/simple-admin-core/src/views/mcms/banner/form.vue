@@ -1,15 +1,12 @@
 <script lang="ts" setup>
 import type { McmsBannerInfo } from '#/api/mcms/model/mcmsBannerModel';
 
-import { ref } from 'vue';
-
-import { useVbenModal } from '@vben/common-ui';
-import { $t } from '@vben/locales';
-
-import { message } from 'ant-design-vue';
-
 import { useVbenForm } from '#/adapter/form';
 import { createMcmsBanner, updateMcmsBanner } from '#/api/mcms/mcmsBanner';
+import { useVbenModal } from '@vben/common-ui';
+import { $t } from '@vben/locales';
+import { message } from 'ant-design-vue';
+import { ref } from 'vue';
 
 import { dataFormSchemas } from './schemas';
 

@@ -1,10 +1,9 @@
 <script setup lang="ts">
 import type { AuthenticationProps } from './types';
 
-import { computed, watch } from 'vue';
-
 import { useVbenModal } from '@vben-core/popup-ui';
 import { Slot, VbenAvatar } from '@vben-core/shadcn-ui';
+import { computed, watch } from 'vue';
 
 interface Props extends AuthenticationProps {
   avatar?: string;

@@ -1,12 +1,10 @@
 <script lang="ts" setup>
-import { useVbenModal } from '@vben/common-ui';
-import { $t } from '@vben/locales';
-
-import { message } from 'ant-design-vue';
-
 import { useVbenForm } from '#/adapter/form';
 import { sendSms } from '#/api/mcms/messageSender';
 import { smsSenderFormSchemas } from '#/views/mcms/smsProvider/schemas';
+import { useVbenModal } from '@vben/common-ui';
+import { $t } from '@vben/locales';
+import { message } from 'ant-design-vue';
 
 defineOptions({
   name: 'SmsSenderFormModal',

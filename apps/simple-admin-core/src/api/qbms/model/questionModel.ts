@@ -1,3 +1,5 @@
+import type { ListCommentResp } from '#/api/community/model/comment';
+
 import type { NoteInfo } from '../../community/model/note';
 import type { BaseListResp } from '../../model/baseModel';
 /**
@@ -38,6 +40,7 @@ export interface QuestionInfo {
   star?: boolean;
   input?: string;
   note?: NoteInfo;
+  comments?: ListCommentResp;
 }
 
 /**

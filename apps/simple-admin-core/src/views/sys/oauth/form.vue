@@ -1,18 +1,15 @@
 <script lang="ts" setup>
 import type { OauthProviderInfo } from '#/api/sys/model/oauthProviderModel';
 
-import { ref } from 'vue';
-
-import { useVbenModal } from '@vben/common-ui';
-import { $t } from '@vben/locales';
-
-import { message } from 'ant-design-vue';
-
 import { useVbenForm } from '#/adapter/form';
 import {
   createOauthProvider,
   updateOauthProvider,
 } from '#/api/sys/oauthProvider';
+import { useVbenModal } from '@vben/common-ui';
+import { $t } from '@vben/locales';
+import { message } from 'ant-design-vue';
+import { ref } from 'vue';
 
 import { dataFormSchemas } from './schemas';
 

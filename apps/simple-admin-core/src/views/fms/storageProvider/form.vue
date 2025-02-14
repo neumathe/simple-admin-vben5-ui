@@ -1,18 +1,15 @@
 <script lang="ts" setup>
 import type { StorageProviderInfo } from '#/api/fms/model/storageProviderModel';
 
-import { ref } from 'vue';
-
-import { useVbenModal } from '@vben/common-ui';
-import { $t } from '@vben/locales';
-
-import { message } from 'ant-design-vue';
-
 import { useVbenForm } from '#/adapter/form';
 import {
   createStorageProvider,
   updateStorageProvider,
 } from '#/api/fms/storageProvider';
+import { useVbenModal } from '@vben/common-ui';
+import { $t } from '@vben/locales';
+import { message } from 'ant-design-vue';
+import { ref } from 'vue';
 
 import { dataFormSchemas } from './schemas';
 

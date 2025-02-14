@@ -1,18 +1,15 @@
 <script lang="ts" setup>
 import type { EmailProviderInfo } from '#/api/mcms/model/emailProviderModel';
 
-import { ref } from 'vue';
-
-import { useVbenModal } from '@vben/common-ui';
-import { $t } from '@vben/locales';
-
-import { message } from 'ant-design-vue';
-
 import { useVbenForm } from '#/adapter/form';
 import {
   createEmailProvider,
   updateEmailProvider,
 } from '#/api/mcms/emailProvider';
+import { useVbenModal } from '@vben/common-ui';
+import { $t } from '@vben/locales';
+import { message } from 'ant-design-vue';
+import { ref } from 'vue';
 
 import { dataFormSchemas } from './schemas';
 

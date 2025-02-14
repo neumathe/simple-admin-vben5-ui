@@ -1,16 +1,14 @@
-import {
-  type BaseDataResp,
-  type BaseIDReq,
-  type BaseIDsReq,
-  type BaseListReq,
-  type BaseResp,
+import type {
+  BaseDataResp,
+  BaseIDReq,
+  BaseIDsReq,
+  BaseListReq,
+  BaseResp,
 } from '#/api/model/baseModel';
-import { requestClient } from '#/api/request';
 
-import {
-  type PositionInfo,
-  type PositionListResp,
-} from './model/positionModel';
+import type { PositionInfo, PositionListResp } from './model/positionModel';
+
+import { requestClient } from '#/api/request';
 
 enum Api {
   CreatePosition = '/sys-api/position/create',

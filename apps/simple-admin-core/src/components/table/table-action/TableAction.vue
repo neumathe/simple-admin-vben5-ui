@@ -1,14 +1,12 @@
 <script setup lang="ts">
 import type { ButtonType } from 'ant-design-vue/es/button';
+import type { PropType } from 'vue';
 
 import type { ActionItem, PopConfirm } from './types';
 
-import { computed, type PropType, toRaw } from 'vue';
-
+import { Icon } from '@iconify/vue';
 import { useAccess } from '@vben/access';
 import { isBoolean, isFunction } from '@vben/utils';
-
-import { Icon } from '@iconify/vue';
 import {
   Button,
   Dropdown,
@@ -17,6 +15,7 @@ import {
   Space,
   Tooltip,
 } from 'ant-design-vue';
+import { computed, toRaw } from 'vue';
 
 const props = defineProps({
   actions: {

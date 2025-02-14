@@ -1,19 +1,18 @@
 <script lang="ts" setup>
 import type { VxeGridListeners, VxeGridProps } from '#/adapter/vxe-table';
-
-import { h, ref } from 'vue';
-
-import { Page, useVbenModal, type VbenFormProps } from '@vben/common-ui';
-import { $t } from '@vben/locales';
-
-import { useClipboard } from '@vueuse/core';
-import { Button, Image, message, Modal } from 'ant-design-vue';
-import { isPlainObject } from 'remeda';
+import type { ActionItem } from '#/components/table/table-action';
+import type { VbenFormProps } from '@vben/common-ui';
 
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import { deleteFile, downloadFile, getFileList } from '#/api/fms/file';
 import { UploadDragger } from '#/components/form';
-import { type ActionItem, TableAction } from '#/components/table/table-action';
+import { TableAction } from '#/components/table/table-action';
+import { Page, useVbenModal } from '@vben/common-ui';
+import { $t } from '@vben/locales';
+import { useClipboard } from '@vueuse/core';
+import { Button, Image, message, Modal } from 'ant-design-vue';
+import { isPlainObject } from 'remeda';
+import { h, ref } from 'vue';
 
 import FileForm from './form.vue';
 import { searchFormSchemas, tableColumns } from './schemas';

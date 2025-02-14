@@ -1,16 +1,14 @@
-import {
-  type BaseDataResp,
-  type BaseIDReq,
-  type BaseIDsReq,
-  type BaseListReq,
-  type BaseResp,
+import type {
+  BaseDataResp,
+  BaseIDReq,
+  BaseIDsReq,
+  BaseListReq,
+  BaseResp,
 } from '#/api/model/baseModel';
-import { requestClient } from '#/api/request';
 
-import {
-  type PsSubjectInfo,
-  type PsSubjectListResp,
-} from './model/psSubjectModel';
+import type { PsSubjectInfo, PsSubjectListResp } from './model/psSubjectModel';
+
+import { requestClient } from '#/api/request';
 
 enum Api {
   CreatePsSubject = '/question-api/ps_subject/create',

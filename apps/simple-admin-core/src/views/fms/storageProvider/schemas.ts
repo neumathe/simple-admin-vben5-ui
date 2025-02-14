@@ -1,13 +1,10 @@
 import type { VxeGridProps } from '#/adapter/vxe-table';
-
-import { h } from 'vue';
-
-import { type VbenFormProps } from '@vben/common-ui';
-import { $t } from '@vben/locales';
-
-import { Switch, Tag } from 'ant-design-vue';
+import type { VbenFormProps } from '@vben/common-ui';
 
 import { updateStorageProvider } from '#/api/fms/storageProvider';
+import { $t } from '@vben/locales';
+import { Switch, Tag } from 'ant-design-vue';
+import { h } from 'vue';
 
 export const tableColumns: VxeGridProps = {
   columns: [

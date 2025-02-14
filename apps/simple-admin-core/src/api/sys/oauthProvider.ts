@@ -1,20 +1,20 @@
+import type {
+  BaseDataResp,
+  BaseIDReq,
+  BaseIDsReq,
+  BaseListReq,
+  BaseResp,
+} from '#/api/model/baseModel';
 import type { LoginResp } from '#/api/sys/model/userModel';
 
-import {
-  type BaseDataResp,
-  type BaseIDReq,
-  type BaseIDsReq,
-  type BaseListReq,
-  type BaseResp,
-} from '#/api/model/baseModel';
-import { requestClient } from '#/api/request';
-
-import {
-  type OauthLoginReq,
-  type OauthProviderInfo,
-  type OauthProviderListResp,
-  type RedirectResp,
+import type {
+  OauthLoginReq,
+  OauthProviderInfo,
+  OauthProviderListResp,
+  RedirectResp,
 } from './model/oauthProviderModel';
+
+import { requestClient } from '#/api/request';
 
 enum Api {
   CreateOauthProvider = '/sys-api/oauth_provider/create',

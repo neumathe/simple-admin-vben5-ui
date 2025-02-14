@@ -2,18 +2,16 @@
 import type { QuestionInputInfo } from '#/api/qbms/model/psOnlinePracticeModel';
 import type { QuestionInfo } from '#/api/qbms/model/questionModel';
 
-import { computed, onBeforeUnmount, onMounted, ref } from 'vue';
-import { useRoute } from 'vue-router';
-
-import { Button } from 'ant-design-vue';
-import Swal from 'sweetalert2';
-
 import {
   getPsOnlinePracticeById,
   submitPractice,
 } from '#/api/qbms/psOnlinePractice';
 import { FloatSetting } from '#/components/configuration';
 import Question from '#/components/questions/question.vue';
+import { Button } from 'ant-design-vue';
+import Swal from 'sweetalert2';
+import { computed, onBeforeUnmount, onMounted, ref } from 'vue';
+import { useRoute } from 'vue-router';
 
 defineOptions({
   name: 'SequentialPractice',

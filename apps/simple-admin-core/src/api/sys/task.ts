@@ -1,13 +1,14 @@
-import {
-  type BaseDataResp,
-  type BaseIDReq,
-  type BaseIDsReq,
-  type BaseListReq,
-  type BaseResp,
+import type {
+  BaseDataResp,
+  BaseIDReq,
+  BaseIDsReq,
+  BaseListReq,
+  BaseResp,
 } from '#/api/model/baseModel';
-import { requestClient } from '#/api/request';
 
-import { type TaskInfo, type TaskListResp } from './model/taskModel';
+import type { TaskInfo, TaskListResp } from './model/taskModel';
+
+import { requestClient } from '#/api/request';
 
 enum Api {
   CreateTask = '/sys-api/task/create',

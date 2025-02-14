@@ -1,13 +1,14 @@
-import {
-  type BaseDataResp,
-  type BaseIDReq,
-  type BaseIDsReq,
-  type BaseListReq,
-  type BaseResp,
+import type {
+  BaseDataResp,
+  BaseIDReq,
+  BaseIDsReq,
+  BaseListReq,
+  BaseResp,
 } from '#/api/model/baseModel';
-import { requestClient } from '#/api/request';
 
-import { type TagInfo, type TagListResp } from './model/fileTagModel';
+import type { TagInfo, TagListResp } from './model/fileTagModel';
+
+import { requestClient } from '#/api/request';
 
 enum Api {
   CreateTag = '/fms-api/file_tag/create',

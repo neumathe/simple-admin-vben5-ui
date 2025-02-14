@@ -1,15 +1,12 @@
 <script lang="ts" setup>
 import type { CloudFileTagInfo } from '#/api/fms/model/cloudFileTagModel';
 
-import { ref } from 'vue';
-
-import { useVbenModal } from '@vben/common-ui';
-import { $t } from '@vben/locales';
-
-import { message } from 'ant-design-vue';
-
 import { useVbenForm } from '#/adapter/form';
 import { createCloudFileTag, updateCloudFileTag } from '#/api/fms/cloudFileTag';
+import { useVbenModal } from '@vben/common-ui';
+import { $t } from '@vben/locales';
+import { message } from 'ant-design-vue';
+import { ref } from 'vue';
 
 import { dataFormSchemas } from './schemas';
 

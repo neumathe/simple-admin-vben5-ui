@@ -1,17 +1,18 @@
-import {
-  type BaseDataResp,
-  type BaseIDReq,
-  type BaseIDsReq,
-  type BaseListReq,
-  type BaseResp,
+import type {
+  BaseDataResp,
+  BaseIDReq,
+  BaseIDsReq,
+  BaseListReq,
+  BaseResp,
 } from '#/api/model/baseModel';
-import { requestClient } from '#/api/request';
 
-import {
-  type DictionaryDetailInfo,
-  type DictionaryDetailListResp,
-  type DictionaryNameReq,
+import type {
+  DictionaryDetailInfo,
+  DictionaryDetailListResp,
+  DictionaryNameReq,
 } from './model/dictionaryDetailModel';
+
+import { requestClient } from '#/api/request';
 
 enum Api {
   CreateDictionaryDetail = '/sys-api/dictionary_detail/create',

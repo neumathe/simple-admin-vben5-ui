@@ -1,9 +1,8 @@
 <script lang="ts" setup>
-import { ref } from 'vue';
-
+import { initializeFileDatabase } from '#/api/fms/initialize';
+import { initializeMMSDatabase } from '#/api/member/initialize';
 import { Page } from '@vben/common-ui';
 import { $t } from '@vben/locales';
-
 import {
   Button,
   Card,
@@ -13,9 +12,7 @@ import {
   Row,
   TypographyTitle,
 } from 'ant-design-vue';
-
-import { initializeFileDatabase } from '#/api/fms/initialize';
-import { initializeMMSDatabase } from '#/api/member/initialize';
+import { ref } from 'vue';
 // api
 import {
   initializeJobDatabase,

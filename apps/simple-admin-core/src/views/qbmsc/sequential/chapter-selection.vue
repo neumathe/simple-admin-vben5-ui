@@ -1,13 +1,11 @@
 <script lang="ts" setup>
 import type { ChapterInfo } from '#/api/qbms/model/psChapterModel';
 
-import { ref, watch } from 'vue';
-import { useRouter } from 'vue-router';
-
-import { Menu, RadioButton, RadioGroup } from 'ant-design-vue';
-
 import { fetchAndTransformChapterList } from '#/api/qbms/psChapter';
 import { getPsSubjectList } from '#/api/qbms/psSubject';
+import { Menu, RadioButton, RadioGroup } from 'ant-design-vue';
+import { ref, watch } from 'vue';
+import { useRouter } from 'vue-router';
 
 defineOptions({
   name: 'ChapterSelection',

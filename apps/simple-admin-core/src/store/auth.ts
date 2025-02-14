@@ -7,17 +7,6 @@ import type {
   LoginResp,
 } from '#/api/sys/model/userModel';
 
-import { ref } from 'vue';
-import { useRouter } from 'vue-router';
-
-import { DEFAULT_HOME_PATH, LOGIN_PATH } from '@vben/constants';
-import { preferences } from '@vben/preferences';
-import { resetAllStores, useAccessStore, useUserStore } from '@vben/stores';
-
-import { notification } from 'ant-design-vue';
-import { defineStore } from 'pinia';
-import { isArray } from 'remeda';
-
 import {
   doLogout,
   getPermCode,
@@ -27,6 +16,14 @@ import {
   loginBySms,
 } from '#/api/sys/user';
 import { $t } from '#/locales';
+import { DEFAULT_HOME_PATH, LOGIN_PATH } from '@vben/constants';
+import { preferences } from '@vben/preferences';
+import { resetAllStores, useAccessStore, useUserStore } from '@vben/stores';
+import { notification } from 'ant-design-vue';
+import { defineStore } from 'pinia';
+import { isArray } from 'remeda';
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
 
 export const useAuthStore = defineStore('auth', () => {
   const accessStore = useAccessStore();

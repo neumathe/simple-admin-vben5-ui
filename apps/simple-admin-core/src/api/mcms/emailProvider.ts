@@ -1,16 +1,17 @@
-import {
-  type BaseDataResp,
-  type BaseIDReq,
-  type BaseIDsReq,
-  type BaseListReq,
-  type BaseResp,
+import type {
+  BaseDataResp,
+  BaseIDReq,
+  BaseIDsReq,
+  BaseListReq,
+  BaseResp,
 } from '#/api/model/baseModel';
-import { requestClient } from '#/api/request';
 
-import {
-  type EmailProviderInfo,
-  type EmailProviderListResp,
+import type {
+  EmailProviderInfo,
+  EmailProviderListResp,
 } from './model/emailProviderModel';
+
+import { requestClient } from '#/api/request';
 
 enum Api {
   CreateEmailProvider = '/sys-api/email_provider/create',

@@ -63,22 +63,6 @@ const toggleStar = () => {
   });
 };
 
-// 元素高度 计算高度过渡动画
-const container = ref(null);
-const content = ref(null);
-const animatedHeight = ref('auto');
-let resizeObserver = null;
-
-const updateHeight = () => {
-  if (content.value && container.value) {
-    const contentHeight = (content.value as HTMLElement)?.offsetHeight;
-    (container.value as HTMLElement).style.height = `${contentHeight}px`;
-    setTimeout(() => {
-      animatedHeight.value = 'auto';
-    }, 500);
-  }
-};
-
 // 屏幕宽度
 const screenWidth = ref(window.innerWidth);
 
@@ -88,15 +72,6 @@ const updateScreenWidth = () => {
 
 onMounted(() => {
   window.addEventListener('resize', updateScreenWidth); // 监听窗口变化
-  resizeObserver = new ResizeObserver(() => {
-    animatedHeight.value = `${(content.value as unknown as HTMLElement)?.offsetHeight}px`;
-    updateHeight();
-  });
-  if (content.value) {
-    resizeObserver.observe(content.value);
-    // 初始化高度
-    updateHeight();
-  }
 });
 
 onBeforeUnmount(() => {
@@ -133,13 +108,55 @@ const contentWidth = computed(() => {
 
   return 0;
 });
+const beforeEnter = (el: any) => {
+  el.style.height = '0';
+  el.style.opacity = '0';
+};
+
+const enter = (el: any, done: () => void) => {
+  // 确保元素的高度和透明度在获取 scrollHeight 之前是自然状态
+  el.style.height = 'auto';
+  el.style.opacity = '1';
+  const height = el.scrollHeight; // 获取元素的实际高度
+  el.style.height = '0px'; // 设置初始高度为0
+  el.style.opacity = '0'; // 设置初始透明度为0
+  el.style.maxHeight = `${height}px`;
+  el.style.overflow = 'hidden';
+  requestAnimationFrame(() => {
+    el.style.transition = 'height 0.5s ease-in-out, opacity 0.5s ease-in-out';
+    el.style.height = `${height}px`;
+    el.style.opacity = '1';
+  });
+
+  el.addEventListener('transitionend', () => {
+    el.style.height = 'auto'; // 恢复到 auto，确保后续内容不受限制
+    done();
+  });
+};
+
+const leave = (el: any, done: () => void) => {
+  el.style.height = `${el.scrollHeight}px`; // 先设置固定高度
+  el.style.opacity = '1';
+  el.style.visibility = 'visible';
+  requestAnimationFrame(() => {
+    el.style.transition = 'height 0.5s ease-in-out, opacity 0.5s ease-in-out';
+    el.style.height = '0';
+    el.style.opacity = '0';
+  });
+
+  el.addEventListener('transitionend', (event: TransitionEvent) => {
+    if (event.propertyName === 'opacity') {
+      done();
+    }
+  });
+};
+
+// Disable interaction when showAnswer is true
+// const isDisabled = computed(() => props.showAnswer);
 </script>
 <template>
-  <div
-    ref="container"
-    class="bg-card m-5 flex flex-col rounded-lg shadow-xl transition-[height] duration-500 ease-in-out"
-  >
-    <div ref="content">
+  <div class="bg-card m-5 flex flex-col rounded-lg shadow-xl">
+    <div>
       <!-- 头部操作区 -->
       <div class="flex items-center justify-between px-4 py-3">
         <!-- 左侧题目序号 -->
@@ -251,24 +268,23 @@ const contentWidth = computed(() => {
 
       <div class="flex flex-col xl:flex-row xl:divide-x">
         <!-- 左侧元素 -->
-        <Transition name="element">
+        <div
+          v-if="
+            (questionConfigStore.showComment || showComment) && props.mode < 10
+          "
+          class="order-4 m-1 p-4 xl:order-none xl:w-1/4"
+        >
           <div
-            v-if="
-              (questionConfigStore.showComment || showComment) &&
-              props.mode < 10
-            "
-            class="order-4 m-1 p-4 xl:order-none xl:w-1/4"
+            class="h-full max-h-[650px] overflow-y-auto border-t xl:border-none"
           >
-            <div
-              class="h-full max-h-[650px] overflow-y-auto border-t xl:border-none"
-            >
-              <Comment
-                :question="props.question.id!"
-                :subject="props.question.subjectId!"
-              />
-            </div>
+            <Comment
+              :question="props.question.id!"
+              :subject="props.question.subjectId!"
+              :comments="props.question.comments?.data"
+              :total="props.question.comments?.total"
+            />
           </div>
-        </Transition>
+        </div>
 
         <!-- 中间元素 -->
         <div
@@ -277,8 +293,7 @@ const contentWidth = computed(() => {
             'xl:w-3/4': contentWidth === 1,
             'xl:w-full': contentWidth === 0,
           }"
-          class="order-2 mx-4 mb-6 max-w-full gap-4 border-none px-6 xl:order-none"
-          style="transition: width 0.5s ease"
+          class="transition-width order-2 mx-4 mb-6 max-w-full gap-4 border-none px-6 duration-500 xl:order-none"
         >
           <!-- 问题部分  QuestionType = 1 单选题 -->
           <SingleChoice
@@ -296,13 +311,24 @@ const contentWidth = computed(() => {
           />
         </div>
         <!-- 右侧元素 -->
-        <transition name="element">
+        <transition
+          name="note"
+          @before-enter="beforeEnter"
+          @enter="enter"
+          @leave="leave"
+        >
           <div
             v-show="
               ((questionConfigStore.showNote || showNote) && props.mode < 10) ||
               (props.mode >= 10 && showNote)
             "
-            class="order-3 border-none xl:order-none xl:ml-auto xl:w-1/4"
+            :class="
+              ((questionConfigStore.showNote || showNote) && props.mode < 10) ||
+              (props.mode >= 10 && showNote)
+                ? 'xl:w-1/4'
+                : 'xl:w-0'
+            "
+            class="transition-width order-3 border-none duration-500 xl:order-none xl:ml-auto"
           >
             <div
               class="h-full max-h-[650px] overflow-y-auto border-t xl:border-none"
@@ -320,48 +346,15 @@ const contentWidth = computed(() => {
   </div>
 </template>
 <style scoped>
-.element-enter-active,
-.element-leave-active {
+.comment-enter-active,
+.comment-leave-active {
+  will-change: transform;
+}
+
+.note-enter-active,
+.note-leave-active {
+  will-change: transform;
+  visibility: visible;
   overflow: hidden;
-  transition:
-    height 0.5s ease,
-    opacity 0.5s ease,
-    transform 0.5s ease;
-}
-
-.element-enter-from,
-.element-leave-to {
-  height: 0;
-  opacity: 0;
-}
-
-.element-enter-to,
-.element-leave-from {
-  height: auto;
-  opacity: 1;
-}
-
-@media (min-width: 1280px) {
-  .element-enter-active,
-  .element-leave-active {
-    overflow: hidden;
-    transition:
-      opacity 0.5s ease,
-      width 0.5s ease;
-  }
-
-  .element-enter-from,
-  .element-leave-to {
-    width: 0;
-    height: auto;
-    opacity: 0;
-  }
-
-  .element-enter-to,
-  .element-leave-from {
-    width: 25%;
-    height: auto;
-    opacity: 1;
-  }
 }
 </style>

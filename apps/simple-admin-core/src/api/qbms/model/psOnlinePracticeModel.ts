@@ -1,5 +1,5 @@
-import { type BaseListResp } from '../../model/baseModel';
-import { type QuestionInfo } from './questionModel';
+import type { BaseListResp } from '../../model/baseModel';
+import type { QuestionInfo } from './questionModel';
 /**
  *  @description: PsOnlinePractice info response
  */

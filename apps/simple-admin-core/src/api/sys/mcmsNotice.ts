@@ -1,16 +1,17 @@
-import {
-  type BaseDataResp,
-  type BaseListReq,
-  type BaseResp,
-  type BaseUUIDReq,
-  type BaseUUIDsReq,
+import type {
+  BaseDataResp,
+  BaseListReq,
+  BaseResp,
+  BaseUUIDReq,
+  BaseUUIDsReq,
 } from '#/api/model/baseModel';
-import { requestClient } from '#/api/request';
 
-import {
-  type McmsNoticeInfo,
-  type McmsNoticeListResp,
+import type {
+  McmsNoticeInfo,
+  McmsNoticeListResp,
 } from './model/mcmsNoticeModel';
+
+import { requestClient } from '#/api/request';
 
 enum Api {
   CreateMcmsNotice = '/sys-api/mcms_notice/create',

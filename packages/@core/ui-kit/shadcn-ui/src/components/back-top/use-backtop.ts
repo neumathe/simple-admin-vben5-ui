@@ -1,8 +1,7 @@
 import type { BacktopProps } from './backtop';
 
-import { onMounted, ref, shallowRef } from 'vue';
-
 import { useEventListener, useThrottleFn } from '@vueuse/core';
+import { onMounted, ref, shallowRef } from 'vue';
 
 export const useBackTop = (props: BacktopProps) => {
   const el = shallowRef<HTMLElement>();

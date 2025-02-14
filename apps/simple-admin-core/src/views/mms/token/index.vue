@@ -1,17 +1,16 @@
 <script lang="ts" setup>
 import type { VxeGridListeners, VxeGridProps } from '#/adapter/vxe-table';
 import type { TokenInfo } from '#/api/sys/model/tokenModel';
-
-import { h, ref } from 'vue';
-
-import { Page, type VbenFormProps } from '@vben/common-ui';
-import { $t } from '@vben/locales';
-
-import { Button, Modal } from 'ant-design-vue';
+import type { ActionItem } from '#/components/table/table-action';
+import type { VbenFormProps } from '@vben/common-ui';
 
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import { deleteToken, getTokenList } from '#/api/member/token';
-import { type ActionItem, TableAction } from '#/components/table/table-action';
+import { TableAction } from '#/components/table/table-action';
+import { Page } from '@vben/common-ui';
+import { $t } from '@vben/locales';
+import { Button, Modal } from 'ant-design-vue';
+import { h, ref } from 'vue';
 
 import { searchFormSchemas, tableColumns } from './schemas';
 

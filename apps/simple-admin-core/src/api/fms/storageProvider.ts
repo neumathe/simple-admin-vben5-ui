@@ -1,16 +1,17 @@
-import {
-  type BaseDataResp,
-  type BaseIDReq,
-  type BaseIDsReq,
-  type BaseListReq,
-  type BaseResp,
+import type {
+  BaseDataResp,
+  BaseIDReq,
+  BaseIDsReq,
+  BaseListReq,
+  BaseResp,
 } from '#/api/model/baseModel';
-import { requestClient } from '#/api/request';
 
-import {
-  type StorageProviderInfo,
-  type StorageProviderListResp,
+import type {
+  StorageProviderInfo,
+  StorageProviderListResp,
 } from './model/storageProviderModel';
+
+import { requestClient } from '#/api/request';
 
 enum Api {
   CreateStorageProvider = '/fms-api/storage_provider/create',

@@ -1,7 +1,8 @@
-import { type BaseResp } from '#/api/model/baseModel';
-import { requestClient } from '#/api/request';
+import type { BaseResp } from '#/api/model/baseModel';
 
-import { type StarRequest } from './model/psStarModel';
+import type { StarRequest } from './model/psStarModel';
+
+import { requestClient } from '#/api/request';
 
 enum Api {
   Star = '/question-api/star',

@@ -1,13 +1,14 @@
-import {
-  type BaseDataResp,
-  type BaseListReq,
-  type BaseResp,
-  type BaseUUIDReq,
-  type BaseUUIDsReq,
+import type {
+  BaseDataResp,
+  BaseListReq,
+  BaseResp,
+  BaseUUIDReq,
+  BaseUUIDsReq,
 } from '#/api/model/baseModel';
-import { requestClient } from '#/api/request';
 
-import { type MemberInfo, type MemberListResp } from './model/memberModel';
+import type { MemberInfo, MemberListResp } from './model/memberModel';
+
+import { requestClient } from '#/api/request';
 
 enum Api {
   CreateMember = '/mms-api/member/create',

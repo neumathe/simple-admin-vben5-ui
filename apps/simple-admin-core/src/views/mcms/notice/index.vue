@@ -1,20 +1,19 @@
 <script lang="ts" setup>
 import type { VxeGridListeners, VxeGridProps } from '#/adapter/vxe-table';
 import type { McmsNoticeInfo } from '#/api/mcms/model/mcmsNoticeModel';
-
-import { h, ref } from 'vue';
-
-import { Page, useVbenModal, type VbenFormProps } from '@vben/common-ui';
-import { $t } from '@vben/locales';
-
-import { Button, Modal } from 'ant-design-vue';
-import { isPlainObject } from 'remeda';
+import type { ActionItem } from '#/components/table/table-action';
+import type { VbenFormProps } from '@vben/common-ui';
 
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import { deleteMcmsNotice, getMcmsNoticeList } from '#/api/mcms/mcmsNotice';
-import { type ActionItem, TableAction } from '#/components/table/table-action';
+import { TableAction } from '#/components/table/table-action';
 import McmsNoticeForm from '#/views/mcms/notice/form.vue';
 import { searchFormSchemas, tableColumns } from '#/views/mcms/notice/schemas';
+import { Page, useVbenModal } from '@vben/common-ui';
+import { $t } from '@vben/locales';
+import { Button, Modal } from 'ant-design-vue';
+import { isPlainObject } from 'remeda';
+import { h, ref } from 'vue';
 
 defineOptions({
   name: 'McmsNoticeManagement',

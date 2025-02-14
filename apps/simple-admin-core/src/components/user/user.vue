@@ -18,7 +18,7 @@ const firstLetter = computed(() =>
 </script>
 
 <template>
-  <div class="flex items-center">
+  <div class="flex items-center" v-if="props.user">
     <Avatar
       v-if="props.user.avatar !== ''"
       :src="props.user.avatar"
@@ -37,3 +37,9 @@ const firstLetter = computed(() =>
     </div>
   </div>
 </template>
+
+<style>
+.dark .text-secondary-foreground {
+  color: #757d8d;
+}
+</style>

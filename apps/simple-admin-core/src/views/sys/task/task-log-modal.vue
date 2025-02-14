@@ -1,17 +1,16 @@
 <script lang="ts" setup>
 import type { VxeGridListeners, VxeGridProps } from '#/adapter/vxe-table';
 import type { DictionaryDetailInfo } from '#/api/sys/model/dictionaryDetailModel';
-
-import { h, ref } from 'vue';
-
-import { useVbenModal, type VbenFormProps } from '@vben/common-ui';
-import { $t } from '@vben/locales';
-
-import { Button, Modal } from 'ant-design-vue';
+import type { ActionItem } from '#/components/table/table-action';
+import type { VbenFormProps } from '@vben/common-ui';
 
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import { deleteTaskLog, getTaskLogList } from '#/api/sys/taskLog';
-import { type ActionItem, TableAction } from '#/components/table/table-action';
+import { TableAction } from '#/components/table/table-action';
+import { useVbenModal } from '@vben/common-ui';
+import { $t } from '@vben/locales';
+import { Button, Modal } from 'ant-design-vue';
+import { h, ref } from 'vue';
 
 import { taskLogSearchFormSchemas, taskLogTableColumns } from './schemas';
 

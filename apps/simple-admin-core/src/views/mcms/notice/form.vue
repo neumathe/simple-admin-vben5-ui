@@ -1,15 +1,12 @@
 <script lang="ts" setup>
 import type { McmsNoticeInfo } from '#/api/mcms/model/mcmsNoticeModel';
 
-import { ref } from 'vue';
-
-import { useVbenModal } from '@vben/common-ui';
-import { $t } from '@vben/locales';
-
-import { message } from 'ant-design-vue';
-
 import { useVbenForm } from '#/adapter/form';
 import { createMcmsNotice, updateMcmsNotice } from '#/api/mcms/mcmsNotice';
+import { useVbenModal } from '@vben/common-ui';
+import { $t } from '@vben/locales';
+import { message } from 'ant-design-vue';
+import { ref } from 'vue';
 
 import { dataFormSchemas } from './schemas';
 

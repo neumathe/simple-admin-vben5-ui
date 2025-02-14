@@ -1,10 +1,8 @@
 <script lang="ts" setup>
-import { SwitchItem } from '@vben/layouts';
-
-import { SettingOutlined } from '@ant-design/icons-vue';
-import { FloatButtonGroup } from 'ant-design-vue';
-
 import { useQuestionConfig } from '#/store/questionConfig';
+import { SettingOutlined } from '@ant-design/icons-vue';
+import { SwitchItem } from '@vben/layouts';
+import { FloatButtonGroup } from 'ant-design-vue';
 
 import SliderItem from './base/slider-item.vue';
 

@@ -1,13 +1,10 @@
 import type { VxeGridProps } from '#/adapter/vxe-table';
-
-import { h } from 'vue';
-
-import { type VbenFormProps } from '@vben/common-ui';
-import { $t } from '@vben/locales';
-
-import { Switch } from 'ant-design-vue';
+import type { VbenFormProps } from '@vben/common-ui';
 
 import { updateMcmsBanner } from '#/api/mcms/mcmsBanner';
+import { $t } from '@vben/locales';
+import { Switch } from 'ant-design-vue';
+import { h } from 'vue';
 
 const typeMap = {
   1: $t('mcms.bannerType.web'),

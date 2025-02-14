@@ -1,16 +1,14 @@
-import {
-  type BaseDataResp,
-  type BaseListReq,
-  type BaseResp,
-  type BaseUUIDReq,
-  type BaseUUIDsReq,
+import type {
+  BaseDataResp,
+  BaseListReq,
+  BaseResp,
+  BaseUUIDReq,
+  BaseUUIDsReq,
 } from '#/api/model/baseModel';
-import { requestClient } from '#/api/request';
 
-import {
-  type EmailLogInfo,
-  type EmailLogListResp,
-} from './model/emailLogModel';
+import type { EmailLogInfo, EmailLogListResp } from './model/emailLogModel';
+
+import { requestClient } from '#/api/request';
 
 enum Api {
   CreateEmailLog = '/sys-api/email_log/create',

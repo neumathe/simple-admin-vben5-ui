@@ -1,6 +1,6 @@
 import type { VxeGridProps } from '#/adapter/vxe-table';
+import type { VbenFormProps } from '@vben/common-ui';
 
-import { type VbenFormProps } from '@vben/common-ui';
 import { $t } from '@vben/locales';
 
 export const tableColumns: VxeGridProps = {

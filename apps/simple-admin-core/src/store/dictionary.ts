@@ -1,9 +1,8 @@
-import { ref } from 'vue';
-
-import { type DefaultOptionType } from 'ant-design-vue/lib/select';
-import { defineStore } from 'pinia';
+import type { DefaultOptionType } from 'ant-design-vue/lib/select';
 
 import { GetDictionaryDetailByDictionaryName } from '#/api/sys/dictionaryDetail';
+import { defineStore } from 'pinia';
+import { ref } from 'vue';
 
 interface DictionaryDataDefaultOptionType extends DefaultOptionType {
   status?: null | number | string;

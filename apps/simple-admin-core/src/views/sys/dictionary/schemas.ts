@@ -1,16 +1,13 @@
 import type { VxeGridProps } from '#/adapter/vxe-table';
 import type { DictionaryDetailInfo } from '#/api/sys/model/dictionaryDetailModel';
-
-import { h } from 'vue';
-
-import { type VbenFormProps } from '@vben/common-ui';
-import { $t } from '@vben/locales';
-
-import { InputNumber, Switch } from 'ant-design-vue';
+import type { VbenFormProps } from '@vben/common-ui';
 
 import { z } from '#/adapter/form';
 import { updateDictionary } from '#/api/sys/dictionary';
 import { updateDictionaryDetail } from '#/api/sys/dictionaryDetail';
+import { $t } from '@vben/locales';
+import { InputNumber, Switch } from 'ant-design-vue';
+import { h } from 'vue';
 
 export const tableColumns: VxeGridProps = {
   columns: [
@@ -133,7 +130,6 @@ export const detailTableColumns: VxeGridProps<DictionaryDetailInfo> = {
           return h(InputNumber, {
             modelValue: e.row.sort,
             onInput: (n) => {
-              console.log(n);
               e.row.sort = Number(n);
             },
           });

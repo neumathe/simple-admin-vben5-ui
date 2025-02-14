@@ -1,23 +1,19 @@
 <script lang="ts" setup>
-import type { DataNode } from 'ant-design-vue/es/vc-tree/interface';
-
 import type { BaseDataResp } from '#/api/model/baseModel';
 import type { ApiInfo, ApiListResp } from '#/api/sys/model/apiModel';
 import type { ApiAuthorityInfo } from '#/api/sys/model/authorityModel';
-
-import { ref } from 'vue';
-
-import { useVbenModal } from '@vben/common-ui';
-import { $t } from '@vben/locales';
-
-import { message, Tree } from 'ant-design-vue';
-import { clone, concat, isNumber, unique } from 'remeda';
+import type { DataNode } from 'ant-design-vue/es/vc-tree/interface';
 
 import {
   createOrUpdateApiAuthority,
   getApiAuthority,
   getApiList,
 } from '#/api/sys/authority';
+import { useVbenModal } from '@vben/common-ui';
+import { $t } from '@vben/locales';
+import { message, Tree } from 'ant-design-vue';
+import { clone, concat, isNumber, unique } from 'remeda';
+import { ref } from 'vue';
 
 defineOptions({
   name: 'ApiAuthorityModal',

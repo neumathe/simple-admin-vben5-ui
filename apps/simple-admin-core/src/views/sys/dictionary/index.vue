@@ -1,18 +1,17 @@
 <script lang="ts" setup>
 import type { VxeGridListeners, VxeGridProps } from '#/adapter/vxe-table';
 import type { DictionaryInfo } from '#/api/sys/model/dictionaryModel';
-
-import { h, ref } from 'vue';
-
-import { Page, useVbenModal, type VbenFormProps } from '@vben/common-ui';
-import { $t } from '@vben/locales';
-
-import { Button, Modal } from 'ant-design-vue';
-import { isPlainObject } from 'remeda';
+import type { ActionItem } from '#/components/table/table-action';
+import type { VbenFormProps } from '@vben/common-ui';
 
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import { deleteDictionary, getDictionaryList } from '#/api/sys/dictionary';
-import { type ActionItem, TableAction } from '#/components/table/table-action';
+import { TableAction } from '#/components/table/table-action';
+import { Page, useVbenModal } from '@vben/common-ui';
+import { $t } from '@vben/locales';
+import { Button, Modal } from 'ant-design-vue';
+import { isPlainObject } from 'remeda';
+import { h, ref } from 'vue';
 
 import DictionaryDetailModal from './detail.vue';
 import DictionaryForm from './form.vue';

@@ -1,16 +1,17 @@
-import {
-  type BaseDataResp,
-  type BaseIDReq,
-  type BaseIDsReq,
-  type BaseResp,
+import type {
+  BaseDataResp,
+  BaseIDReq,
+  BaseIDsReq,
+  BaseResp,
 } from '#/api/model/baseModel';
-import { requestClient } from '#/api/request';
 
-import {
-  type ConfigurationInfo,
-  type ConfigurationListReq,
-  type ConfigurationListResp,
+import type {
+  ConfigurationInfo,
+  ConfigurationListReq,
+  ConfigurationListResp,
 } from './model/configurationModel';
+
+import { requestClient } from '#/api/request';
 
 enum Api {
   CreateConfiguration = '/sys-api/configuration/create',

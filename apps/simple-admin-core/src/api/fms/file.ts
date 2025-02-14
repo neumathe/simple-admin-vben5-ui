@@ -1,12 +1,12 @@
-import { requestClient } from '#/api/request';
-
-import {
-  type BaseDataResp,
-  type BaseListReq,
-  type BaseResp,
-  type BaseUUIDsReq,
+import type {
+  BaseDataResp,
+  BaseListReq,
+  BaseResp,
+  BaseUUIDsReq,
 } from '../model/baseModel';
-import { type FileListResp, type updateFileInfoReq } from './model/fileModel';
+import type { FileListResp, updateFileInfoReq } from './model/fileModel';
+
+import { requestClient } from '#/api/request';
 // import { type UploadApiResp } from '@/api/sys/model/uploadModel';
 // import { type AxiosProgressEvent } from 'axios';
 

@@ -1,16 +1,17 @@
-import {
-  type BaseDataResp,
-  type BaseIDReq,
-  type BaseIDsReq,
-  type BaseListReq,
-  type BaseResp,
+import type {
+  BaseDataResp,
+  BaseIDReq,
+  BaseIDsReq,
+  BaseListReq,
+  BaseResp,
 } from '#/api/model/baseModel';
-import { requestClient } from '#/api/request';
 
-import {
-  type MemberRankInfo,
-  type MemberRankListResp,
+import type {
+  MemberRankInfo,
+  MemberRankListResp,
 } from '../member/model/memberRankModel';
+
+import { requestClient } from '#/api/request';
 
 enum Api {
   CreateMemberRank = '/mms-api/member_rank/create',

@@ -1,16 +1,17 @@
-import {
-  type BaseDataResp,
-  type BaseListReq,
-  type BaseResp,
-  type BaseUUIDReq,
-  type BaseUUIDsReq,
+import type {
+  BaseDataResp,
+  BaseListReq,
+  BaseResp,
+  BaseUUIDReq,
+  BaseUUIDsReq,
 } from '#/api/model/baseModel';
-import { requestClient } from '#/api/request';
 
-import {
-  type McmsBannerInfo,
-  type McmsBannerListResp,
+import type {
+  McmsBannerInfo,
+  McmsBannerListResp,
 } from './model/mcmsBannerModel';
+
+import { requestClient } from '#/api/request';
 
 enum Api {
   CreateMcmsBanner = '/sys-api/mcms_banner/create',

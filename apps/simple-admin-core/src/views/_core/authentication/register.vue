@@ -2,17 +2,14 @@
 import type { VbenFormSchema } from '@vben/common-ui';
 import type { BasicOption } from '@vben/types';
 
-import { computed, h, ref } from 'vue';
-import { useRouter } from 'vue-router';
-
+import { getCaptcha, getEmailCaptcha, getSmsCaptcha } from '#/api/sys/captcha';
+import { register, registerByEmail, registerBySms } from '#/api/sys/user';
 import { AuthenticationRegister, z } from '@vben/common-ui';
 import { $t } from '@vben/locales';
 import { usePreferences } from '@vben/preferences';
-
 import { Image, message } from 'ant-design-vue';
-
-import { getCaptcha, getEmailCaptcha, getSmsCaptcha } from '#/api/sys/captcha';
-import { register, registerByEmail, registerBySms } from '#/api/sys/user';
+import { computed, h, ref } from 'vue';
+import { useRouter } from 'vue-router';
 
 defineOptions({ name: 'Register' });
 

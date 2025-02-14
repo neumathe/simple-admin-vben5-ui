@@ -1,7 +1,6 @@
 import type { CAC } from 'cac';
 
 import { getPackages } from '@vben/node-utils';
-
 import depcheck from 'depcheck';
 
 async function runDepcheck() {

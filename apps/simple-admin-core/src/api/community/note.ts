@@ -6,9 +6,9 @@ import type {
 } from '../model/baseModel';
 import type {
   likeNoteReq,
+  ListNoteResp,
   NoteInfo,
   NoteListReq,
-  TokenListResp,
 } from './model/note';
 
 import { requestClient } from '#/api/request';
@@ -39,7 +39,7 @@ export const updateNote = (params: NoteInfo) => {
 };
 
 export const listMoreNote = (params: NoteListReq) => {
-  return requestClient.post<BaseDataResp<TokenListResp>>(Api.MoreNote, params);
+  return requestClient.post<BaseDataResp<ListNoteResp>>(Api.MoreNote, params);
 };
 
 export const likeNote = (params: likeNoteReq) => {

@@ -3,7 +3,6 @@ import type { ConfigEnv, UserConfig } from 'vite';
 import type { DefineLibraryOptions } from '../typing';
 
 import { readPackageJSON } from '@vben/node-utils';
-
 import { defineConfig, mergeConfig } from 'vite';
 
 import { loadLibraryPlugins } from '../plugins';

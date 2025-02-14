@@ -1,13 +1,14 @@
-import {
-  type BaseDataResp,
-  type BaseIDReq,
-  type BaseIDsReq,
-  type BaseListReq,
-  type BaseResp,
+import type {
+  BaseDataResp,
+  BaseIDReq,
+  BaseIDsReq,
+  BaseListReq,
+  BaseResp,
 } from '#/api/model/baseModel';
-import { requestClient } from '#/api/request';
 
-import { type RoleInfo, type RoleListResp } from './model/roleModel';
+import type { RoleInfo, RoleListResp } from './model/roleModel';
+
+import { requestClient } from '#/api/request';
 
 enum Api {
   CreateRole = '/sys-api/role/create',

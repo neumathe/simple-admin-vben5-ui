@@ -1,12 +1,10 @@
 <script lang="ts" setup>
-import { useVbenModal } from '@vben/common-ui';
-import { $t } from '@vben/locales';
-
-import { message } from 'ant-design-vue';
-
 import { useVbenForm } from '#/adapter/form';
 import { sendEmail } from '#/api/mcms/messageSender';
 import { emailSenderFormSchemas } from '#/views/mcms/emailProvider/schemas';
+import { useVbenModal } from '@vben/common-ui';
+import { $t } from '@vben/locales';
+import { message } from 'ant-design-vue';
 
 defineOptions({
   name: 'EmailSenderFormModal',

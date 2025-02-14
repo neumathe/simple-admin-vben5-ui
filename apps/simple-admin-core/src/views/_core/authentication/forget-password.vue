@@ -1,18 +1,13 @@
 <script lang="ts" setup>
+import type { VbenFormSchema } from '@vben/common-ui';
 import type { BasicOption, Recordable } from '@vben/types';
-
-import { ref } from 'vue';
-import { useRouter } from 'vue-router';
-
-import {
-  AuthenticationForgetPassword,
-  type VbenFormSchema,
-  z,
-} from '@vben/common-ui';
-import { $t } from '@vben/locales';
 
 import { getEmailCaptcha, getSmsCaptcha } from '#/api/sys/captcha';
 import { resetPasswordByEmail, resetPasswordBySms } from '#/api/sys/user';
+import { AuthenticationForgetPassword, z } from '@vben/common-ui';
+import { $t } from '@vben/locales';
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
 
 defineOptions({ name: 'ForgetPassword' });
 

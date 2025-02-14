@@ -1,7 +1,6 @@
-import { computed } from 'vue';
-
 import { preferences, updatePreferences } from '@vben/preferences';
 import { useAccessStore, useUserStore } from '@vben/stores';
+import { computed } from 'vue';
 
 function useAccess() {
   const accessStore = useAccessStore();

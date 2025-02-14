@@ -1,17 +1,18 @@
-import {
-  type BaseDataResp,
-  type BaseIDReq,
-  type BaseIDsReq,
-  type BaseResp,
+import type {
+  BaseDataResp,
+  BaseIDReq,
+  BaseIDsReq,
+  BaseResp,
 } from '#/api/model/baseModel';
-import { requestClient } from '#/api/request';
 
-import {
-  type ChapterInfo,
-  type GetChapterReq,
-  type PsChapterInfo,
-  type PsChapterListResp,
+import type {
+  ChapterInfo,
+  GetChapterReq,
+  PsChapterInfo,
+  PsChapterListResp,
 } from './model/psChapterModel';
+
+import { requestClient } from '#/api/request';
 
 enum Api {
   CreatePsChapter = '/question-api/ps_chapter/create',

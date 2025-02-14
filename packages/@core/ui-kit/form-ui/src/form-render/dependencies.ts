@@ -4,11 +4,9 @@ import type {
   MaybeComponentProps,
 } from '../types';
 
-import { computed, ref, watch } from 'vue';
-
 import { isBoolean, isFunction } from '@vben-core/shared/utils';
-
 import { useFormValues } from 'vee-validate';
+import { computed, ref, watch } from 'vue';
 
 import { injectRenderFormProps } from './context';
 

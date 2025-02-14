@@ -1,15 +1,12 @@
-import {
-  type BaseDataResp,
-  type BaseIDReq,
-  type BaseResp,
-} from '#/api/model/baseModel';
-import { requestClient } from '#/api/request';
+import type { BaseDataResp, BaseIDReq, BaseResp } from '#/api/model/baseModel';
 
-import {
-  type MenuInfoPlain,
-  type MenuPlainListResp,
-  type RoleMenuResp,
+import type {
+  MenuInfoPlain,
+  MenuPlainListResp,
+  RoleMenuResp,
 } from './model/menuModel';
+
+import { requestClient } from '#/api/request';
 
 enum Api {
   CreateMenu = '/sys-api/menu/create',

@@ -1,11 +1,11 @@
-import { requestClient } from '#/api/request';
-
-import { type BaseDataResp } from '../model/baseModel';
-import {
-  type CaptchaResp,
-  type GetEmailCaptchaReq,
-  type GetSmsCaptchaReq,
+import type { BaseDataResp } from '../model/baseModel';
+import type {
+  CaptchaResp,
+  GetEmailCaptchaReq,
+  GetSmsCaptchaReq,
 } from './model/captcha';
+
+import { requestClient } from '#/api/request';
 
 enum Api {
   GetCaptcha = '/sys-api/captcha',

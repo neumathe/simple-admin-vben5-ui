@@ -1,14 +1,11 @@
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
-import { useRouter } from 'vue-router';
-
-import { $t } from '@vben/locales';
-import { useAccessStore } from '@vben/stores';
-
-import { message } from 'ant-design-vue';
-
 import { oauthLoginCallback } from '#/api/sys/oauthProvider';
 import { useAuthStore } from '#/store';
+import { $t } from '@vben/locales';
+import { useAccessStore } from '@vben/stores';
+import { message } from 'ant-design-vue';
+import { defineComponent, ref } from 'vue';
+import { useRouter } from 'vue-router';
 
 const router = useRouter();
 

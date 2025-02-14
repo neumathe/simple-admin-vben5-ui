@@ -1,6 +1,6 @@
 import type { RouteMeta } from 'vue-router';
 
-import { type BaseListResp } from '../../model/baseModel';
+import type { BaseListResp } from '../../model/baseModel';
 
 export interface RouteItem {
   id?: number;

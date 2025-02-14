@@ -1,13 +1,14 @@
-import {
-  type BaseDataResp,
-  type BaseListReq,
-  type BaseResp,
-  type BaseUUIDReq,
-  type BaseUUIDsReq,
+import type {
+  BaseDataResp,
+  BaseListReq,
+  BaseResp,
+  BaseUUIDReq,
+  BaseUUIDsReq,
 } from '#/api/model/baseModel';
-import { requestClient } from '#/api/request';
 
-import { type TokenInfo, type TokenListResp } from './model/tokenModel';
+import type { TokenInfo, TokenListResp } from './model/tokenModel';
+
+import { requestClient } from '#/api/request';
 
 enum Api {
   CreateToken = '/sys-api/token/create',

@@ -1,8 +1,10 @@
 <script setup lang="ts">
+import type { CommentInfo } from '#/api/community/model/comment';
 import type { NoteInfo } from '#/api/community/model/note';
 import type { ExposeParam } from 'md-editor-v3';
 import type { PropType } from 'vue';
 
+import { ListComment } from '#/api/community/comment';
 import {
   createNote,
   deleteNoteC,
@@ -11,6 +13,7 @@ import {
   updateNote,
 } from '#/api/community/note';
 import { uploadCloudFile } from '#/api/fms/cloudFile';
+import { Comment } from '#/components/comment';
 import { User } from '#/components/user';
 import { dateStr } from '#/utils/time';
 import Icon, {
@@ -25,10 +28,12 @@ import { Emoji, Mark } from '@vavt/v3-extension';
 import { usePreferences } from '@vben/preferences';
 import {
   Button,
+  Empty,
   message,
   Modal,
   Pagination,
   Popconfirm,
+  Skeleton,
   Spin,
 } from 'ant-design-vue';
 import { MdEditor, MdPreview } from 'md-editor-v3';
@@ -78,6 +83,7 @@ const id = `note-editor-p${props.question}`;
 // };
 const isEdit = ref(false);
 const isMore = ref(false);
+const isComment = ref(false);
 const isLoadingMore = ref(false);
 const MoreNoteList = ref<NoteInfo[]>([]);
 const MoreNoteTotal = ref(0);
@@ -86,6 +92,10 @@ const { isDark, isMobile } = usePreferences();
 
 const editorId = `note-editor${props.question}`;
 const editorRef = ref<ExposeParam>();
+const showCommentId = ref(0);
+const comments = ref<CommentInfo[]>([]);
+const commentsTotal = ref(0);
+const isLoadingComment = ref(false);
 
 const uploadImg = async (
   files: Array<File>,
@@ -148,6 +158,8 @@ const showEditor = () => {
 const showMore = () => {
   isMore.value = true;
   isLoadingMore.value = true;
+  showCommentId.value = 0;
+  comments.value = [];
   listMoreNote({
     question: props.question,
     subject: props.subject,
@@ -267,6 +279,50 @@ const changeIsPublished = () => {
   }
 };
 
+const showComment = (id: number) => {
+  if (showCommentId.value === id) {
+    showCommentId.value = 0;
+    comments.value = [];
+  } else {
+    isLoadingComment.value = true;
+    showCommentId.value = id;
+    comments.value = [];
+    ListComment({
+      noteId: id,
+      page: 1,
+      pageSize: 5,
+    })
+      .then((res) => {
+        if (res.code === 0) {
+          comments.value = res.data.data;
+          commentsTotal.value = res.data.total;
+        }
+      })
+      .finally(() => {
+        isLoadingComment.value = false;
+      });
+  }
+};
+
+const showCommentReply = () => {
+  isMore.value = false;
+  isComment.value = true;
+  isLoadingComment.value = true;
+  ListComment({
+    noteId: Note.value.id,
+    page: 1,
+    pageSize: 5,
+  })
+    .then((res) => {
+      if (res.code === 0) {
+        comments.value = res.data.data;
+        commentsTotal.value = res.data.total;
+      }
+    })
+    .finally(() => {
+      isLoadingComment.value = false;
+    });
+};
 watch(MoreNotePage, () => {
   isLoadingMore.value = true;
   MoreNoteList.value = [];
@@ -290,7 +346,7 @@ watch(MoreNotePage, () => {
 </script>
 
 <template>
-  <div v-if="Note === null || Note.id === undefined">
+  <div v-if="Note === null || Note.id === undefined" class="overflow-hidden">
     <div class="m-1 p-4">
       暂无笔记
       <div class="flex h-[100px] items-center justify-center space-x-4">
@@ -334,6 +390,7 @@ watch(MoreNotePage, () => {
         </span>
         <span v-else>发布于：{{ dateStr(Note.createdAt!) }}</span>
         <span>赞({{ Note.like }})</span>
+        <button @click="showCommentReply">评论({{ Note.replies ?? 0 }})</button>
       </div>
 
       <!-- 右侧按钮 -->
@@ -397,7 +454,11 @@ watch(MoreNotePage, () => {
   <Modal v-model:open="isMore" :footer="null" title="更多笔记" width="80%">
     <Spin :indicator="indicator" :spinning="isLoadingMore">
       <div v-if="isLoadingMore" class="h-[400px] w-full"></div>
-      <div v-if="MoreNoteList.length === 0 && !isLoadingMore">暂无笔记...</div>
+      <div
+        v-if="!MoreNoteList || (MoreNoteList.length === 0 && !isLoadingMore)"
+      >
+        <Empty description="暂无笔记" />
+      </div>
       <div v-else>
         <div class="grid grid-cols-1 divide-y">
           <div v-for="n in MoreNoteList" :key="n.id" class="mt-4 pt-2">
@@ -475,6 +536,7 @@ watch(MoreNotePage, () => {
               <button
                 class="hover:text-primary-500 flex items-center rounded px-4 py-2 text-gray-600 transition hover:bg-gray-100"
                 type="button"
+                @click="() => showComment(n.id!)"
               >
                 <svg
                   class="mr-1 h-3 w-3"
@@ -488,9 +550,25 @@ watch(MoreNotePage, () => {
                     fill-rule="evenodd"
                   />
                 </svg>
-                1,270 条评论
+                {{ n.replies }} 条评论
               </button>
             </div>
+            <Skeleton
+              active
+              avatar
+              :paragraph="{ rows: 3 }"
+              v-if="showCommentId === n.id && isLoadingComment"
+            />
+
+            <Comment
+              class="mt-4"
+              :subject="props.subject"
+              :question="props.question"
+              :note="n.id"
+              :comments="comments"
+              :total="commentsTotal"
+              v-if="showCommentId === n.id && !isLoadingComment"
+            />
           </div>
         </div>
         <div class="mt-4 flex justify-center">
@@ -503,6 +581,30 @@ watch(MoreNotePage, () => {
         </div>
       </div>
     </Spin>
+  </Modal>
+  <Modal v-model:open="isComment" :footer="null" title="回复评论" width="80%">
+    <div class="divide-y">
+      <MdPreview
+        :editor-id="id"
+        :model-value="Note.content"
+        :theme="isDark ? 'dark' : 'light'"
+      />
+      <Skeleton
+        active
+        avatar
+        :paragraph="{ rows: 3 }"
+        v-if="isLoadingComment"
+      />
+      <Comment
+        class="mt-4"
+        :subject="props.subject"
+        :question="props.question"
+        :note="Note.id"
+        :comments="comments"
+        :total="commentsTotal"
+        v-if="!isLoadingComment"
+      />
+    </div>
   </Modal>
 </template>
 
@@ -534,5 +636,13 @@ svg.md-editor-icon {
 .md-editor-modal-container[data-theme='dark'] {
   --md-bk-color: #1c1e22;
   --md-color: var(--foreground);
+}
+
+.no-scrollbar {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge */
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
 }
 </style>

@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
-
 import { Slider } from 'ant-design-vue';
+import { onMounted, ref } from 'vue';
 
 defineOptions({
   name: 'SliderItem',

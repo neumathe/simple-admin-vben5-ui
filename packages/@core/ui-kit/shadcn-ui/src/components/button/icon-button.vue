@@ -2,9 +2,8 @@
 import type { ButtonVariants } from '../../ui';
 import type { VbenButtonProps } from './button';
 
-import { computed, useSlots } from 'vue';
-
 import { cn } from '@vben-core/shared/utils';
+import { computed, useSlots } from 'vue';
 
 import { VbenTooltip } from '../tooltip';
 import VbenButton from './button.vue';

@@ -1,15 +1,12 @@
 <script lang="ts" setup>
-import { onMounted } from 'vue';
-
+import { useVbenForm } from '#/adapter/form';
+import { changePassword, getUserProfile, updateProfile } from '#/api/sys/user';
 import { Page } from '@vben/common-ui';
 import { $t } from '@vben/locales';
 import { useAccessStore } from '@vben/stores';
-
 import { useClipboard } from '@vueuse/core';
 import { Button, Card, Col, message, Row } from 'ant-design-vue';
-
-import { useVbenForm } from '#/adapter/form';
-import { changePassword, getUserProfile, updateProfile } from '#/api/sys/user';
+import { onMounted } from 'vue';
 
 import { changePasswordFormSchemas, dataFormSchemas } from './schemas';
 

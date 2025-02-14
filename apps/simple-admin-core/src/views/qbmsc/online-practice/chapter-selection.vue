@@ -1,14 +1,12 @@
 <script lang="ts" setup>
 import type { ChapterInfo } from '#/api/qbms/model/psChapterModel';
 
-import { onMounted, ref } from 'vue';
-import { useRouter } from 'vue-router';
-
-import { RadioButton, RadioGroup, Slider, Spin, Tree } from 'ant-design-vue';
-
 import { fetchAndTransformChapterList } from '#/api/qbms/psChapter';
 import { createPsOnlinePractice } from '#/api/qbms/psOnlinePractice';
 import { getPsSubjectList } from '#/api/qbms/psSubject';
+import { RadioButton, RadioGroup, Slider, Spin, Tree } from 'ant-design-vue';
+import { onMounted, ref } from 'vue';
+import { useRouter } from 'vue-router';
 
 defineOptions({
   name: 'ChapterSelection',
@@ -37,7 +35,7 @@ const modes = [
   },
   {
     key: 4,
-    label: '高效',
+    label: '智能',
   },
 ];
 
@@ -171,6 +169,9 @@ const go = () => {
         >
           <span class="flex items-center text-lg">题数</span>
           <Slider v-model:value="count" :max="25" :min="10" class="w-1/2" />
+          <span>
+            {{ count }}
+          </span>
         </div>
         <div class="flex w-full flex-row-reverse p-3">
           <button

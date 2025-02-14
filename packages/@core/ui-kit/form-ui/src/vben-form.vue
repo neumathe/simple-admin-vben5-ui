@@ -1,9 +1,8 @@
 <script setup lang="ts">
 import type { VbenFormProps } from './types';
 
-import { ref, watchEffect } from 'vue';
-
 import { useForwardPropsEmits } from '@vben-core/composables';
+import { ref, watchEffect } from 'vue';
 
 import FormActions from './components/form-actions.vue';
 import {

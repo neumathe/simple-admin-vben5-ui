@@ -1,16 +1,17 @@
-import {
-  type BaseDataResp,
-  type BaseIDReq,
-  type BaseIDsReq,
-  type BaseResp,
+import type {
+  BaseDataResp,
+  BaseIDReq,
+  BaseIDsReq,
+  BaseResp,
 } from '#/api/model/baseModel';
-import { requestClient } from '#/api/request';
 
-import {
-  type QuestionInfo,
-  type QuestionListReq,
-  type QuestionListResp,
+import type {
+  QuestionInfo,
+  QuestionListReq,
+  QuestionListResp,
 } from './model/questionModel';
+
+import { requestClient } from '#/api/request';
 
 enum Api {
   CreateQuestion = '/question-api/question/create',

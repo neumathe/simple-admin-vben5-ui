@@ -1,12 +1,10 @@
 <script setup lang="ts">
 import type { TreeSelectProps } from 'ant-design-vue';
 
+import { fetchAndTransformChapterList } from '#/api/qbms/psChapter';
+import { TreeSelect } from 'ant-design-vue';
 import { computed, onMounted, ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-
-import { TreeSelect } from 'ant-design-vue';
-
-import { fetchAndTransformChapterList } from '#/api/qbms/psChapter';
 
 const selectedChapter = ref<string>();
 const treeData = ref<TreeSelectProps['treeData']>([]);

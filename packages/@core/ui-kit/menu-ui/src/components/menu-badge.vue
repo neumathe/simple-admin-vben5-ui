@@ -1,9 +1,8 @@
 <script setup lang="ts">
 import type { MenuRecordBadgeRaw } from '@vben-core/typings';
 
-import { computed } from 'vue';
-
 import { isValidColor } from '@vben-core/shared/color';
+import { computed } from 'vue';
 
 import BadgeDot from './menu-badge-dot.vue';
 

@@ -1,13 +1,14 @@
-import {
-  type BaseDataResp,
-  type BaseIDReq,
-  type BaseIDsReq,
-  type BaseListReq,
-  type BaseResp,
+import type {
+  BaseDataResp,
+  BaseIDReq,
+  BaseIDsReq,
+  BaseListReq,
+  BaseResp,
 } from '#/api/model/baseModel';
-import { requestClient } from '#/api/request';
 
-import { type TaskLogInfo, type TaskLogListResp } from './model/taskLogModel';
+import type { TaskLogInfo, TaskLogListResp } from './model/taskLogModel';
+
+import { requestClient } from '#/api/request';
 
 enum Api {
   CreateTaskLog = '/sys-api/task_log/create',

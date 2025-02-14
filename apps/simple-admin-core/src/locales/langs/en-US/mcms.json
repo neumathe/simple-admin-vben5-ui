@@ -61,19 +61,8 @@
     "sendSms": "Send SMS",
     "paramsHelp": "separated by commas",
     "templateIdHelp": "If the template ID is empty, it will use default configuration. Signatures and service providers also do not need to be set"
-  }
-,  "mcmsNotice": {
-    "status": "Status",
-    "title": "Title",
-    "content": "Content",
-    "type": "Type",
-    "duration": "Duration",
-    "once": "Once",
-    "reference": "Reference",
-    "addMcmsNotice": "Add McmsNotice",
-    "editMcmsNotice": "Edit McmsNotice",
-    "mcmsNoticeList": "McmsNotice List"
-  },  "mcmsBanner": {
+  },
+  "mcmsBanner": {
     "status": "Status",
     "image": "Image",
     "type": "Type",
@@ -83,7 +72,8 @@
     "addMcmsBanner": "Add McmsBanner",
     "editMcmsBanner": "Edit McmsBanner",
     "mcmsBannerList": "McmsBanner List"
-  },  "mcmsNotice": {
+  },
+  "mcmsNotice": {
     "status": "Status",
     "title": "Title",
     "content": "Content",
@@ -94,4 +84,5 @@
     "addMcmsNotice": "Add McmsNotice",
     "editMcmsNotice": "Edit McmsNotice",
     "mcmsNoticeList": "McmsNotice List"
-  }}
+  }
+}

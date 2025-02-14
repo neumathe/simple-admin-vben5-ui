@@ -4,13 +4,11 @@ import type {
   WorkbenchQuickNavItem,
 } from '@vben/common-ui';
 
-import { useRouter } from 'vue-router';
-
 import { WorkbenchQuickNav } from '@vben/common-ui';
 import { $t } from '@vben/locales';
+import { useRouter } from 'vue-router';
 // import { useUserStore } from '@vben/stores';
 import { openWindow } from '@vben/utils';
-
 import { Card, TypographyTitle } from 'ant-design-vue';
 
 // const userStore = useUserStore();

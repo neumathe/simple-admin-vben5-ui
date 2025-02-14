@@ -1,21 +1,18 @@
+import type { RouteItem } from '#/api/sys/model/menuModel';
 import type {
   ComponentRecordType,
   GenerateMenuAndRoutesOptions,
 } from '@vben/types';
-
-import type { RouteItem } from '#/api/sys/model/menuModel';
-
-import { generateAccessible } from '@vben/access';
-import { preferences } from '@vben/preferences';
-
-import { array2tree } from '@axolo/tree-array';
-import { message } from 'ant-design-vue';
 
 import { getMenuListByRole } from '#/api/sys/menu';
 import { ParentIdEnum } from '#/enums/common';
 import { BasicLayout, IFrame } from '#/layouts';
 import { $t } from '#/locales';
 import { useAuthStore } from '#/store';
+import { array2tree } from '@axolo/tree-array';
+import { generateAccessible } from '@vben/access';
+import { preferences } from '@vben/preferences';
+import { message } from 'ant-design-vue';
 
 const forbiddenComponent = () => import('#/views/_core/fallback/forbidden.vue');
 

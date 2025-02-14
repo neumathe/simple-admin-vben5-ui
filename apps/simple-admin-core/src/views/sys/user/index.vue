@@ -1,21 +1,20 @@
 <script lang="ts" setup>
 import type { VxeGridListeners, VxeGridProps } from '#/adapter/vxe-table';
 import type { UserInfo } from '#/api/sys/model/userModel';
-
-import { h, onMounted, ref } from 'vue';
-
-import { Page, useVbenModal, type VbenFormProps } from '@vben/common-ui';
-import { $t } from '@vben/locales';
-
-import { Button, Card, Col, message, Modal, Row, Tree } from 'ant-design-vue';
-import { isPlainObject } from 'remeda';
+import type { ActionItem } from '#/components/table/table-action';
+import type { VbenFormProps } from '@vben/common-ui';
 
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import { getDepartmentList } from '#/api/sys/department';
 import { logout } from '#/api/sys/token';
 import { deleteUser, getUserList } from '#/api/sys/user';
-import { type ActionItem, TableAction } from '#/components/table/table-action';
+import { TableAction } from '#/components/table/table-action';
 import { buildDataNode } from '#/utils/tree';
+import { Page, useVbenModal } from '@vben/common-ui';
+import { $t } from '@vben/locales';
+import { Button, Card, Col, message, Modal, Row, Tree } from 'ant-design-vue';
+import { isPlainObject } from 'remeda';
+import { h, onMounted, ref } from 'vue';
 
 import UserForm from './form.vue';
 import { searchFormSchemas, tableColumns } from './schema';

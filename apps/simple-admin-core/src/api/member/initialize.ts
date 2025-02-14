@@ -1,4 +1,5 @@
-import { type BaseResp } from '#/api/model/baseModel';
+import type { BaseResp } from '#/api/model/baseModel';
+
 import { requestClient } from '#/api/request';
 
 enum Api {

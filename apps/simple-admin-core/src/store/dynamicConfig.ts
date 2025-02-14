@@ -1,13 +1,11 @@
 import type { LayoutType } from '@vben/types';
 
+import { getPublicSystemConfigurationList } from '#/api/sys/configuration';
 import {
   defineOverridesPreferences,
   updatePreferences,
 } from '@vben/preferences';
-
 import { defineStore } from 'pinia';
-
-import { getPublicSystemConfigurationList } from '#/api/sys/configuration';
 
 interface DynamicConfig {
   systemName: string;
