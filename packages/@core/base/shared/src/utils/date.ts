@@ -1,6 +1,9 @@
 import dayjs from 'dayjs';
 
 export function formatDate(time: number | string, format = 'YYYY-MM-DD') {
+  if (time === undefined || time === null) {
+    return '';
+  }
   try {
     const date = dayjs(time);
     if (!date.isValid()) {

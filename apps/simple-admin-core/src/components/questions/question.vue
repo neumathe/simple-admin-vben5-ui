@@ -2,14 +2,17 @@
 import type { QuestionInfo } from '#/api/qbms/model/questionModel';
 import type { PropType } from 'vue';
 
+import { addToEbk } from '#/api/qbms/psEbk';
 import { createStar, deleteStar } from '#/api/qbms/psStar';
 import { Comment } from '#/components/comment/';
 import { Note } from '#/components/note/';
 import { useQuestionConfig } from '#/store/questionConfig';
 import { Icon } from '@iconify/vue';
-import { Button, Tooltip } from 'ant-design-vue';
+import { useVbenModal } from '@vben/common-ui';
+import { Button, message, Tooltip } from 'ant-design-vue';
 import { computed, h, onBeforeUnmount, onMounted, ref } from 'vue';
 
+import ExtraModal from './ebkChoiceModal.vue';
 import SingleChoice from './question/singleChoice.vue';
 
 const props = defineProps({
@@ -84,6 +87,32 @@ const showNote = ref(false);
 
 const questionConfigStore = useQuestionConfig();
 
+const addingToEbk = ref(false);
+const [Modal, modalApi] = useVbenModal({
+  connectedComponent: ExtraModal,
+});
+const addQuestionToEbk = () => {
+  addingToEbk.value = true;
+  addToEbk({
+    qustionId: props.question.id,
+  })
+    .then((res) => {
+      if (res.code === 0) {
+        message.success(res.msg);
+      }
+      if (res.code === -1) {
+        modalApi
+          .setData({
+            question: props.question,
+          })
+          .open();
+      }
+    })
+    .finally(() => {
+      addingToEbk.value = false;
+    });
+};
+
 const contentWidth = computed(() => {
   if (props.mode < 10) {
     if (
@@ -108,6 +137,7 @@ const contentWidth = computed(() => {
 
   return 0;
 });
+
 const beforeEnter = (el: any) => {
   el.style.height = '0';
   el.style.opacity = '0';
@@ -180,7 +210,7 @@ const leave = (el: any, done: () => void) => {
           >
             <Button
               :style="{
-                backgroundColor: showAnalysis ? '#DEFF0A' : '#f0f0f0',
+                backgroundColor: showAnalysis ? '#cbe86b' : '#f0f0f0',
                 color: showAnalysis ? '#fff' : '#000',
               }"
               shape="circle"
@@ -248,19 +278,16 @@ const leave = (el: any, done: () => void) => {
           </Tooltip>
           <Tooltip title="加入错题本">
             <Button
-              :style="{
-                backgroundColor: showAnalysis ? '#FF8700' : '#f0f0f0',
-                color: showAnalysis ? '#fff' : '#000',
-              }"
               shape="circle"
-              @click="
-                () => {
-                  showAnalysis = !showAnalysis;
-                }
-              "
-            >
-              <Icon class="m-auto" icon="material-symbols:add-notes-outline" />
-            </Button>
+              @click="addQuestionToEbk"
+              :loading="addingToEbk"
+              :style="{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }"
+              :icon="h(Icon, { icon: 'material-symbols:add-notes-outline' })"
+            />
           </Tooltip>
         </div>
       </div>
@@ -268,23 +295,37 @@ const leave = (el: any, done: () => void) => {
 
       <div class="flex flex-col xl:flex-row xl:divide-x">
         <!-- 左侧元素 -->
-        <div
-          v-if="
-            (questionConfigStore.showComment || showComment) && props.mode < 10
-          "
-          class="order-4 m-1 p-4 xl:order-none xl:w-1/4"
+        <transition
+          name="note"
+          @before-enter="beforeEnter"
+          @enter="enter"
+          @leave="leave"
         >
           <div
-            class="h-full max-h-[650px] overflow-y-auto border-t xl:border-none"
+            v-show="
+              (questionConfigStore.showComment || showComment) &&
+              props.mode < 10
+            "
+            :class="
+              (questionConfigStore.showComment || showComment) &&
+              props.mode < 10
+                ? 'xl:w-1/3'
+                : 'xl:w-0'
+            "
+            class="transition-width order-4 border-none duration-500 xl:order-none xl:ml-auto"
           >
-            <Comment
-              :question="props.question.id!"
-              :subject="props.question.subjectId!"
-              :comments="props.question.comments?.data"
-              :total="props.question.comments?.total"
-            />
+            <div
+              class="m-1 h-full max-h-[650px] overflow-y-auto border-t p-4 xl:border-none"
+            >
+              <Comment
+                :question="props.question.id!"
+                :subject="props.question.subjectId!"
+                :comments="props.question.comments?.data"
+                :total="props.question.comments?.total"
+              />
+            </div>
           </div>
-        </div>
+        </transition>
 
         <!-- 中间元素 -->
         <div
@@ -325,7 +366,7 @@ const leave = (el: any, done: () => void) => {
             :class="
               ((questionConfigStore.showNote || showNote) && props.mode < 10) ||
               (props.mode >= 10 && showNote)
-                ? 'xl:w-1/4'
+                ? 'xl:w-1/3'
                 : 'xl:w-0'
             "
             class="transition-width order-3 border-none duration-500 xl:order-none xl:ml-auto"
@@ -343,6 +384,7 @@ const leave = (el: any, done: () => void) => {
         </transition>
       </div>
     </div>
+    <Modal />
   </div>
 </template>
 <style scoped>

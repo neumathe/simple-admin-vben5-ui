@@ -54,7 +54,8 @@ const getChapterTree = async (subjectId: string) => {
 const isSequentialRoute = computed(() => {
   const { subject, chapter } = route.params;
   return (
-    route.path.startsWith('/qbmsc/sequential/') &&
+    (route.path.startsWith('/qbmsc/sequential/') ||
+      route.path.startsWith('/qbmsc/unordered/')) &&
     subject !== undefined &&
     chapter !== undefined
   );
@@ -62,7 +63,12 @@ const isSequentialRoute = computed(() => {
 
 watch(selectedChapter, (val) => {
   if (val && val !== '') {
-    router.replace(`/qbmsc/sequential/${route.params.subject}/${val}`);
+    const { path, query, hash } = route;
+    const newPath = path.replace(
+      /\/[^/]+\/[^/]+$/,
+      `/${route.params.subject}/${val}`,
+    );
+    router.replace({ path: newPath, query: { ...query, page: 1 }, hash });
   }
 });
 

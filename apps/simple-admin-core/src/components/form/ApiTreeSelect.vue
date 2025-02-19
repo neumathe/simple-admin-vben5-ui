@@ -9,7 +9,7 @@ import { $t } from '@vben/locales';
 import { useVModel } from '@vueuse/core';
 import { TreeSelect } from 'ant-design-vue';
 import { isArray, isFunction } from 'remeda';
-import { onMounted, ref, unref, watch } from 'vue';
+import { nextTick, onMounted, ref, unref, watch } from 'vue';
 
 const props = defineProps({
   value: {
@@ -60,6 +60,10 @@ const props = defineProps({
     type: String,
     default: 'label',
   },
+  needBuild: {
+    type: Boolean,
+    default: true,
+  },
 });
 
 const emits = defineEmits(['update:value', 'optionsChange']);
@@ -107,18 +111,21 @@ async function fetch() {
   if (!isArray(result)) {
     result = get(result, props.resultField);
   }
-  treeData.value = buildTreeNode(result, {
-    idKeyField: props.idKeyField,
-    parentKeyField: props.parentKeyField,
-    childrenKeyField: props.childrenKeyField,
-    valueField: props.valueField,
-    labelField: props.labelField,
-    defaultValue: props.defaultValue,
+  treeData.value = props.needBuild
+    ? buildTreeNode(result, {
+        idKeyField: props.idKeyField,
+        parentKeyField: props.parentKeyField,
+        childrenKeyField: props.childrenKeyField,
+        valueField: props.valueField,
+        labelField: props.labelField,
+        defaultValue: props.defaultValue,
+      })
+    : result;
+
+  nextTick(() => {
+    emits('optionsChange', treeData.value);
+    isFirstLoaded.value = true;
   });
-
-  emits('optionsChange', treeData.value);
-
-  isFirstLoaded.value = true;
 }
 </script>
 

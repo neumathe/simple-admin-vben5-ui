@@ -23,6 +23,7 @@ export interface ChapterInfo {
 export interface GetChapterReq {
   subjectId: number;
   chapterId?: string;
+  starCount?: boolean;
 }
 
 /**

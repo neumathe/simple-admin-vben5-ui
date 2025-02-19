@@ -20,7 +20,8 @@ export interface CreateOnlinePracticeReq {
   subject: number;
   type: number;
   count: number;
-  chapters: number[];
+  chapters?: number[];
+  ebkId?: number;
 }
 
 export interface QuestionInputInfo {
@@ -40,6 +41,11 @@ export interface SubmitPracticeResp {
   isFinish: boolean;
 }
 
+export interface GetPsOnlinePracticeListReq {
+  page: number;
+  pageSize: number;
+  subject?: number;
+}
 /**
  *  @description: PsOnlinePractice list response
  */

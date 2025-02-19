@@ -54,4 +54,6 @@ export interface QuestionListReq {
   pageSize: number;
   subject: number;
   chapter: number;
+  order?: number;
+  star?: boolean;
 }

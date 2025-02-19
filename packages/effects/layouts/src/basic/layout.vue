@@ -43,11 +43,13 @@ const route = useRoute();
 const isSequentialRoute = computed(() => {
   const { subject, chapter } = route.params;
   return (
-    route.path.startsWith('/qbmsc/sequential/') &&
+    (route.path.startsWith('/qbmsc/sequential/') ||
+      route.path.startsWith('/qbmsc/unordered/')) &&
     subject !== undefined &&
     chapter !== undefined
   );
 });
+
 const {
   isDark,
   isHeaderNav,

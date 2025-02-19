@@ -14,7 +14,7 @@ import { onMounted, ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
 defineOptions({
-  name: 'SequentialPractice',
+  name: 'StarSequentialPractice',
 });
 const route = useRoute();
 const router = useRouter();
@@ -36,9 +36,7 @@ const getQuestions = () => {
     subject,
     page: page.value,
     pageSize: pageSize.value,
-    ...(route.query.order === undefined
-      ? {}
-      : { order: Number(route.query.order) }),
+    star: true,
   }).then((res) => {
     questions.value = res.data.data;
     total.value = res.data.total;
@@ -48,7 +46,10 @@ const getQuestions = () => {
 // 初始化章节信息
 (async () => {
   try {
-    const res = await fetchAndTransformChapterList({ subjectId: subject });
+    const res = await fetchAndTransformChapterList({
+      subjectId: subject,
+      starCount: true,
+    });
     const siblings = findSiblingLeafNodes(res, chapter);
     previousLeaf.value = siblings.previousLeaf;
     nextLeaf.value = siblings.nextLeaf;

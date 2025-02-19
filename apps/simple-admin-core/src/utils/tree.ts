@@ -78,7 +78,6 @@ export function buildTreeNode(
         }
       }
     });
-
     return tmpData;
   });
 

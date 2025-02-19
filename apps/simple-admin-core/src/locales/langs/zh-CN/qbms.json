@@ -13,5 +13,29 @@
     "addPsOnlinePractice": "添加 PsOnlinePractice",
     "editPsOnlinePractice": "编辑 PsOnlinePractice",
     "psOnlinePracticeList": "PsOnlinePractice 列表"
+  },
+  "communityNote": {
+    "subject": "Subject",
+    "question": "Question",
+    "content": "Content",
+    "createdBy": "CreatedBy",
+    "like": "Like",
+    "dislike": "Dislike",
+    "deletedBy": "DeletedBy",
+    "published": "Published",
+    "addCommunityNote": "添加 CommunityNote",
+    "editCommunityNote": "编辑 CommunityNote",
+    "communityNoteList": "CommunityNote 列表"
+  },
+  "psEbk": {
+    "questionsCount": "题目总数",
+    "subject": "科目",
+    "createdBy": "创建人",
+    "default": "设为默认",
+    "name": "名字",
+    "chapters": "章节",
+    "addPsEbk": "创建错题本",
+    "editPsEbk": "编辑错题本",
+    "psEbkList": "错题本列表"
   }
 }

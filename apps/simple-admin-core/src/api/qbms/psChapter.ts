@@ -31,11 +31,16 @@ export const getPsChapterList = async (params: GetChapterReq) => {
   const cachedData = localStorage.getItem(cacheKey);
 
   if (cachedData) {
-    const { timestamp, data } = JSON.parse(cachedData);
-    const isExpired = Date.now() - timestamp > 10 * 60 * 1000;
+    try {
+      const { timestamp, data } = JSON.parse(cachedData);
+      const isExpired = Date.now() - timestamp > 1 * 60 * 1000; // 1分钟过期
 
-    if (!isExpired) {
-      return data;
+      if (!isExpired) {
+        return data; // 直接返回缓存数据
+      }
+    } catch (error) {
+      console.error('Failed to parse cache data:', error);
+      localStorage.removeItem(cacheKey); // 解析失败时清除缓存
     }
   }
 
@@ -45,15 +50,17 @@ export const getPsChapterList = async (params: GetChapterReq) => {
       params,
     );
 
+    const responseData = response.data; // 确保存入的是解析后的数据
+
     localStorage.setItem(
       cacheKey,
       JSON.stringify({
         timestamp: Date.now(),
-        data: response,
+        data: responseData, // 存储的是最终解析后的数据
       }),
     );
 
-    return response;
+    return responseData;
   } catch (error) {
     console.error('Failed to fetch PS chapter list:', error);
     throw error;
@@ -126,6 +133,22 @@ export function transformChapters(psChapters: PsChapterInfo[]): ChapterInfo[] {
       }
     }
   });
+  // 递归更新父节点的count字段
+  const updateParentCount = (nodes: ChapterInfo[]) => {
+    nodes.forEach((node) => {
+      if (node.children && node.children.length > 0) {
+        updateParentCount(node.children);
+        if (node.count === 0) {
+          node.count = node.children.reduce(
+            (sum, child) => sum + child.count,
+            0,
+          );
+          node.title = `${node.title.split('(')[0]}(${node.count}题)`;
+        }
+      }
+    });
+  };
+  updateParentCount(result);
 
   // 移除空的 children 数组
   const cleanChildren = (nodes: ChapterInfo[]) => {
@@ -145,9 +168,15 @@ export function transformChapters(psChapters: PsChapterInfo[]): ChapterInfo[] {
 export async function fetchAndTransformChapterList(
   params: GetChapterReq,
 ): Promise<ChapterInfo[]> {
+  if (!params.subjectId) {
+    return [];
+  }
+  if (params.subjectId === 0) {
+    return [];
+  }
   try {
     const response = await getPsChapterList(params);
-    const psChapterInfos = response.data.data || [];
+    const psChapterInfos = response.data || [];
     return transformChapters(psChapterInfos);
   } catch (error) {
     console.error('Failed to fetch chapter list:', error);

@@ -2,13 +2,12 @@ import type {
   BaseDataResp,
   BaseIDReq,
   BaseIDResp,
-  BaseIDsReq,
-  BaseListReq,
   BaseResp,
 } from '#/api/model/baseModel';
 
 import type {
   CreateOnlinePracticeReq,
+  GetPsOnlinePracticeListReq,
   PsOnlinePracticeInfo,
   PsOnlinePracticeListResp,
   SubmitPracticeReq,
@@ -29,7 +28,7 @@ enum Api {
  * @description: Get ps online practice list
  */
 
-export const getPsOnlinePracticeList = (params: BaseListReq) => {
+export const getPsOnlinePracticeList = (params: GetPsOnlinePracticeListReq) => {
   return requestClient.post<BaseDataResp<PsOnlinePracticeListResp>>(
     Api.GetPsOnlinePracticeList,
     params,
@@ -53,7 +52,7 @@ export const submitPractice = (params: SubmitPracticeReq) => {
 /**
  *  @description: Delete ps online practices
  */
-export const deletePsOnlinePractice = (params: BaseIDsReq) => {
+export const deletePsOnlinePractice = (params: BaseIDReq) => {
   return requestClient.post<BaseResp>(Api.DeletePsOnlinePractice, params);
 };
 

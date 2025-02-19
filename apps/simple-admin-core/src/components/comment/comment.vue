@@ -388,6 +388,8 @@ const ModalReliesCountChange = (id: number, count: number) => {
         class="p-2 text-center"
         v-if="total > 5"
         @change="OnPage"
+        :show-quick-jumper="false"
+        :show-size-changer="false"
       />
     </div>
 

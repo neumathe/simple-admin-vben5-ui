@@ -13,5 +13,29 @@
     "addPsOnlinePractice": "Add PsOnlinePractice",
     "editPsOnlinePractice": "Edit PsOnlinePractice",
     "psOnlinePracticeList": "PsOnlinePractice List"
+  },
+  "communityNote": {
+    "subject": "Subject",
+    "question": "Question",
+    "content": "Content",
+    "createdBy": "CreatedBy",
+    "like": "Like",
+    "dislike": "Dislike",
+    "deletedBy": "DeletedBy",
+    "published": "Published",
+    "addCommunityNote": "Add CommunityNote",
+    "editCommunityNote": "Edit CommunityNote",
+    "communityNoteList": "CommunityNote List"
+  },
+  "psEbk": {
+    "questionsCount": "QuestionsCount",
+    "subject": "Subject",
+    "createdBy": "CreatedBy",
+    "default": "Default",
+    "name": "Name",
+    "chapters": "Chapters",
+    "addPsEbk": "Add PsEbk",
+    "editPsEbk": "Edit PsEbk",
+    "psEbkList": "PsEbk List"
   }
 }

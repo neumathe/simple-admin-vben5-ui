@@ -53,14 +53,16 @@ function getItem(
   icon?: any,
   children?: MenuItemType[],
   type?: 'group',
-): MenuItemType {
+  disabled?: boolean,
+): { disabled?: boolean } & MenuItemType {
   return {
     key,
     icon,
     children,
     label,
     type,
-  } as MenuItemType;
+    disabled,
+  };
 }
 
 getPsSubjectList().then((res) => {
@@ -82,7 +84,13 @@ const getChapterTree = async () => {
         );
       };
 
-      treeData.value = res.map((element) => mapChapterToItem(element));
+      const prepareTreeData = (chapters: ChapterInfo[]): MenuItemType[] => {
+        return chapters.map((chapter) => ({
+          ...mapChapterToItem(chapter),
+          disabled: chapter.count === 0,
+        }));
+      };
+      treeData.value = prepareTreeData(res);
     } catch (error) {
       console.error(error);
     }

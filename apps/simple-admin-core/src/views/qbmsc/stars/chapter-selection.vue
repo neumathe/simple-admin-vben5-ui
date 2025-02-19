@@ -3,13 +3,12 @@ import type { ChapterInfo } from '#/api/qbms/model/psChapterModel';
 
 import { fetchAndTransformChapterList } from '#/api/qbms/psChapter';
 import { getPsSubjectList } from '#/api/qbms/psSubject';
-import { getRandomInt } from '#/utils/random';
 import { Menu, RadioButton, RadioGroup } from 'ant-design-vue';
 import { ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
 
 defineOptions({
-  name: 'ChapterSelection',
+  name: 'StarChapterSelection',
 });
 
 const router = useRouter();
@@ -43,6 +42,7 @@ function getItem(
     disabled,
   };
 }
+
 getPsSubjectList().then((res) => {
   subjects.value = res.data.data;
 });
@@ -52,6 +52,7 @@ const getChapterTree = async () => {
     try {
       const res = await fetchAndTransformChapterList({
         subjectId: checkedSubject.value,
+        starCount: true,
       });
       const mapChapterToItem = (chapter: ChapterInfo): MenuItemType => {
         return getItem(
@@ -80,13 +81,7 @@ const getChapterTree = async () => {
 
 watch(selectedKeys, (val) => {
   if (val && val.length > 0 && val[0] !== '') {
-    if (router.currentRoute.value.fullPath.includes('unordered')) {
-      router.push(
-        `/qbmsc/unordered/${checkedSubject.value}/${val[0]}?page=1&order=${getRandomInt(10_000_000, 99_999_999)}`,
-      );
-    } else {
-      router.push(`/qbmsc/sequential/${checkedSubject.value}/${val[0]}?page=1`);
-    }
+    router.push(`/qbmsc/stars/${checkedSubject.value}/${val[0]}?page=1`);
   }
 });
 </script>
@@ -95,13 +90,7 @@ watch(selectedKeys, (val) => {
   <div
     class="bg-card mx-auto my-5 flex max-w-4xl flex-col items-center divide-y rounded-xl"
   >
-    <div class="m-2 w-full py-3 pl-5 text-lg">
-      {{
-        router.currentRoute.value.fullPath.includes('unordered')
-          ? '乱序刷题'
-          : '章节选择'
-      }}
-    </div>
+    <div class="m-2 w-full py-3 pl-5 text-lg">章节选择</div>
     <div class="m-1 w-full justify-center">
       <div class="m-5 flex w-full justify-center">
         <RadioGroup

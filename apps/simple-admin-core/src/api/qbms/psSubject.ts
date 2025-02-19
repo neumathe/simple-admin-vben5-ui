@@ -22,13 +22,44 @@ enum Api {
  * @description: Get ps subject list
  */
 
-export const getPsSubjectList = (params?: BaseListReq) => {
-  return requestClient.post<BaseDataResp<PsSubjectListResp>>(
-    Api.GetPsSubjectList,
-    params,
-  );
-};
+export const getPsSubjectList = async (params?: BaseListReq) => {
+  const cacheKey = `psSubjectList_${JSON.stringify(params)}`;
+  const cachedData = localStorage.getItem(cacheKey);
 
+  if (cachedData) {
+    try {
+      const { timestamp, data } = JSON.parse(cachedData);
+      const isExpired = Date.now() - timestamp > 1 * 60 * 1000; // 1分钟过期
+
+      if (!isExpired) {
+        return data; // 直接返回缓存数据
+      }
+    } catch (error) {
+      console.error('Failed to parse cache data:', error);
+      localStorage.removeItem(cacheKey); // 解析失败时清除缓存
+    }
+  }
+
+  try {
+    const response = await requestClient.post<BaseDataResp<PsSubjectListResp>>(
+      Api.GetPsSubjectList,
+      params,
+    );
+
+    localStorage.setItem(
+      cacheKey,
+      JSON.stringify({
+        timestamp: Date.now(),
+        data: response, // 存储请求返回的数据
+      }),
+    );
+
+    return response;
+  } catch (error) {
+    console.error('Failed to fetch PS subject list:', error);
+    throw error;
+  }
+};
 /**
  *  @description: Create a new ps subject
  */
