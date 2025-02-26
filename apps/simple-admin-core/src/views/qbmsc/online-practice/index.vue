@@ -11,13 +11,17 @@ import Question from '#/components/questions/question.vue';
 import { Button } from 'ant-design-vue';
 import Swal from 'sweetalert2';
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 
 defineOptions({
   name: 'SequentialPractice',
 });
 const route = useRoute();
 const id = Number.parseInt(route.params.id as string);
+const router = useRouter();
+if (!(id > 0)) {
+  router.back();
+}
 const questions = ref();
 const timeUsed = ref(0);
 const isSubmiting = ref(false);
@@ -40,16 +44,21 @@ const updateTime = () => {
 };
 
 const getQuestions = () => {
-  getPsOnlinePracticeById({
-    id,
-  }).then((res) => {
-    if (res.data.submitedAt && res.data.submitedAt > 0) {
-      running.value = false;
-      isFinish.value = true;
-    }
-    questions.value = res.data.questions;
-    timeUsed.value = res.data.timeUsed ?? 0;
-  });
+  try {
+    getPsOnlinePracticeById({
+      id,
+    }).then((res) => {
+      if (res.data.submitedAt && res.data.submitedAt > 0) {
+        running.value = false;
+        isFinish.value = true;
+      }
+      questions.value = res.data.questions;
+      timeUsed.value = res.data.timeUsed ?? 0;
+    });
+  } catch (error) {
+    console.error(error);
+    router.back();
+  }
 };
 
 const timeFormater = computed(() => {
@@ -94,16 +103,18 @@ onMounted(() => {
 });
 
 onBeforeUnmount(() => {
-  handleSubmission(
-    false,
-    questions.value.map(
-      (question: QuestionInfo) =>
-        question.input && {
-          id: question.id,
-          input: question.input,
-        },
-    ),
-  );
+  if (questions.value && questions.value.length > 0) {
+    handleSubmission(
+      false,
+      questions.value.map(
+        (question: QuestionInfo) =>
+          question.input && {
+            id: question.id,
+            input: question.input,
+          },
+      ),
+    );
+  }
   running.value = false;
 });
 

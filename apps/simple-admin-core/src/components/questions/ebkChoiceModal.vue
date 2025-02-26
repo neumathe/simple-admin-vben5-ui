@@ -23,7 +23,7 @@ const [Modal, modalApi] = useVbenModal({
     }
     modalApi.setState({ loading: true });
     addToEbk({
-      qustionId: data.value.question.id,
+      questionId: data.value.question.id,
       ebkId: selectedRowKeys.value[0],
     })
       .then((res) => {

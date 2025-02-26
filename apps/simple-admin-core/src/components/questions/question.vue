@@ -2,7 +2,7 @@
 import type { QuestionInfo } from '#/api/qbms/model/questionModel';
 import type { PropType } from 'vue';
 
-import { addToEbk } from '#/api/qbms/psEbk';
+import { addToEbk, removeFromEbk } from '#/api/qbms/psEbk';
 import { createStar, deleteStar } from '#/api/qbms/psStar';
 import { Comment } from '#/components/comment/';
 import { Note } from '#/components/note/';
@@ -28,9 +28,13 @@ const props = defineProps({
     type: Number,
     default: 0,
   },
+  ebk: {
+    type: Number,
+    default: null,
+  },
 });
 
-const emits = defineEmits(['input']);
+const emits = defineEmits(['input', 'refresh']);
 
 function handleOptionSelected(optionId: number) {
   emits('input', props.index, optionId);
@@ -94,7 +98,7 @@ const [Modal, modalApi] = useVbenModal({
 const addQuestionToEbk = () => {
   addingToEbk.value = true;
   addToEbk({
-    qustionId: props.question.id,
+    questionId: props.question.id,
   })
     .then((res) => {
       if (res.code === 0) {
@@ -113,6 +117,22 @@ const addQuestionToEbk = () => {
     });
 };
 
+const removeQuestionFromEbk = () => {
+  addingToEbk.value = true;
+  removeFromEbk({
+    questionId: props.question.id,
+    ebkId: props.ebk,
+  })
+    .then((res) => {
+      if (res.code === 0) {
+        message.success(res.msg);
+        emits('refresh');
+      }
+    })
+    .finally(() => {
+      addingToEbk.value = false;
+    });
+};
 const contentWidth = computed(() => {
   if (props.mode < 10) {
     if (
@@ -276,7 +296,7 @@ const leave = (el: any, done: () => void) => {
               @click="toggleStar"
             />
           </Tooltip>
-          <Tooltip title="加入错题本">
+          <Tooltip title="加入错题本" v-if="props.ebk === null">
             <Button
               shape="circle"
               @click="addQuestionToEbk"
@@ -287,6 +307,19 @@ const leave = (el: any, done: () => void) => {
                 justifyContent: 'center',
               }"
               :icon="h(Icon, { icon: 'material-symbols:add-notes-outline' })"
+            />
+          </Tooltip>
+          <Tooltip title="移出错题本" v-if="props.ebk && props.ebk > 0">
+            <Button
+              shape="circle"
+              @click="removeQuestionFromEbk"
+              :loading="addingToEbk"
+              :style="{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }"
+              :icon="h(Icon, { icon: 'lets-icons:remove' })"
             />
           </Tooltip>
         </div>

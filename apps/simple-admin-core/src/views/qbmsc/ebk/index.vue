@@ -80,16 +80,27 @@ const gridOptions: VxeGridProps<PsEbkInfo> = {
       title: $t('common.action'),
       fixed: 'right',
       field: 'action',
+      minWidth: 160,
       slots: {
         default: ({ row }) =>
           h(TableAction, {
             actions: [
-              {
-                type: 'link',
-                icon: 'hugeicons:quiz-04',
-                tooltip: '进入模拟考试',
-                onClick: createOnlinePractice.bind(null, row),
-              },
+              row.questionsCount &&
+                row.questionsCount > 0 && {
+                  type: 'link',
+                  icon: 'ant-design:eye-outlined',
+                  tooltip: '查看错题',
+                  onClick: () => {
+                    router.push(`/qbmsc/ebk/${row.subject}/${row.id}`);
+                  },
+                },
+              row.questionsCount &&
+                row.questionsCount > 0 && {
+                  type: 'link',
+                  icon: 'hugeicons:quiz-04',
+                  tooltip: '进入模拟考试',
+                  onClick: createOnlinePractice.bind(null, row),
+                },
               {
                 type: 'link',
                 icon: 'clarity:note-edit-line',
@@ -116,8 +127,8 @@ const gridOptions: VxeGridProps<PsEbkInfo> = {
   keepSource: true,
   pagerConfig: {
     autoHidden: true,
-    pageSizes: [5, 10, 20, 40],
-    pageSize: 10,
+    pageSizes: [10, 15, 20, 40],
+    pageSize: 15,
   },
   proxyConfig: {
     ajax: {

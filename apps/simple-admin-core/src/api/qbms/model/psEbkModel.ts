@@ -18,7 +18,7 @@ export interface PsEbkInfo {
 export interface EbkDetail {
   id?: number;
   ebkId?: number;
-  qustionId: number;
+  questionId: number;
 }
 
 export interface ListEbkReq {

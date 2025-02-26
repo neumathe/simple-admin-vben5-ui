@@ -52,8 +52,16 @@ export type QuestionListResp = BaseListResp<QuestionInfo>;
 export interface QuestionListReq {
   page: number;
   pageSize: number;
-  subject: number;
-  chapter: number;
+  subject?: number;
+  chapter?: number;
   order?: number;
   star?: boolean;
+  ebk?: number;
+}
+
+export interface SearchQuestionReq {
+  page: number;
+  pageSize: number;
+  query: string;
+  subject: number;
 }

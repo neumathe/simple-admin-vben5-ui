@@ -9,6 +9,7 @@ import type {
   QuestionInfo,
   QuestionListReq,
   QuestionListResp,
+  SearchQuestionReq,
 } from './model/questionModel';
 
 import { requestClient } from '#/api/request';
@@ -18,6 +19,7 @@ enum Api {
   DeleteQuestion = '/question-api/question/delete',
   GetQuestionById = '/question-api/question',
   GetQuestionList = '/question-api/question/list',
+  SearchQuestion = '/question-api/question/search',
   UpdateQuestion = '/question-api/question/update',
 }
 
@@ -59,6 +61,13 @@ export const deleteQuestion = (params: BaseIDsReq) => {
 export const getQuestionById = (params: BaseIDReq) => {
   return requestClient.post<BaseDataResp<QuestionInfo>>(
     Api.GetQuestionById,
+    params,
+  );
+};
+
+export const SearchQuestion = (params: SearchQuestionReq) => {
+  return requestClient.post<BaseDataResp<QuestionListResp>>(
+    Api.SearchQuestion,
     params,
   );
 };

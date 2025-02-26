@@ -42,6 +42,7 @@ const tableColumns: VxeGridProps = {
       title: '模式',
       field: 'type',
       slots: { default: 'type' },
+      minWidth: 100,
     },
     {
       title: $t('common.createTime'),

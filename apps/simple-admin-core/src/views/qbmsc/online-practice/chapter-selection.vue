@@ -4,7 +4,14 @@ import type { ChapterInfo } from '#/api/qbms/model/psChapterModel';
 import { fetchAndTransformChapterList } from '#/api/qbms/psChapter';
 import { createPsOnlinePractice } from '#/api/qbms/psOnlinePractice';
 import { getPsSubjectList } from '#/api/qbms/psSubject';
-import { RadioButton, RadioGroup, Slider, Spin, Tree } from 'ant-design-vue';
+import {
+  message,
+  RadioButton,
+  RadioGroup,
+  Slider,
+  Spin,
+  Tree,
+} from 'ant-design-vue';
 import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
@@ -110,7 +117,11 @@ const go = () => {
     count: count.value,
   })
     .then((res) => {
-      router.push(`/qbmsc/online-practice/${res.id}`);
+      if (res.id && res.id > 0) {
+        router.push(`/qbmsc/online-practice/${res.id}`);
+      } else {
+        message.error('创建失败');
+      }
     })
     .finally(() => {
       loading.value = false;

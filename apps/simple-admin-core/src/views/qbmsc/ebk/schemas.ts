@@ -11,10 +11,12 @@ export const tableColumns: VxeGridProps = {
     {
       title: $t('qbms.psEbk.name'),
       field: 'name',
+      minWidth: 150,
     },
     {
       title: $t('qbms.psEbk.questionsCount'),
       field: 'questionsCount',
+      minWidth: 50,
     },
     {
       title: $t('qbms.psEbk.default'),
@@ -26,6 +28,7 @@ export const tableColumns: VxeGridProps = {
       title: '创建时间',
       field: 'createdAt',
       formatter: 'formatDateTime',
+      minWidth: 200,
     },
   ],
 };
