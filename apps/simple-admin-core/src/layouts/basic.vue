@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import type { NotificationItem } from '@vben/layouts';
 
+import { ExportPDFHistory } from '#/components/outputPDF';
 import { $t } from '#/locales';
 import { useAuthStore } from '#/store';
 import LoginForm from '#/views/_core/authentication/login.vue';
@@ -61,6 +62,16 @@ const showDot = computed(() =>
   notifications.value.some((item) => !item.isRead),
 );
 
+const exportModalVisible = ref(false);
+
+const showExportModal = () => {
+  exportModalVisible.value = true;
+};
+
+const closeExportModal = () => {
+  exportModalVisible.value = false;
+};
+
 const menus = computed(() => [
   {
     handler: () => {
@@ -77,6 +88,13 @@ const menus = computed(() => [
     },
     icon: 'ant-design:profile-outlined',
     text: $t('sys.user.profile'),
+  },
+  {
+    icon: 'ant-design:file-pdf-outlined',
+    text: '我的PDF',
+    handler: () => {
+      showExportModal();
+    },
   },
 ]);
 
@@ -139,6 +157,10 @@ watch(
       >
         <LoginForm />
       </AuthenticationLoginExpiredModal>
+      <ExportPDFHistory
+        v-model:open="exportModalVisible"
+        @close="closeExportModal"
+      />
     </template>
     <template #lock-screen>
       <LockScreen :avatar @to-login="handleLogout" />

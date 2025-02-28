@@ -8,6 +8,7 @@ import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import { deletePsEbk, getPsEbkList } from '#/api/qbms/psEbk';
 import { createPsOnlinePractice } from '#/api/qbms/psOnlinePractice';
 import { getPsSubjectList } from '#/api/qbms/psSubject';
+import { ExportPDFModal } from '#/components/outputPDF';
 import { TableAction } from '#/components/table/table-action';
 import { Page, useVbenModal } from '@vben/common-ui';
 import { $t } from '@vben/locales';
@@ -40,6 +41,18 @@ const gridEvents: VxeGridListeners<any> = {
   checkboxAll(e) {
     showDeleteButton.value = e.$table.getCheckboxRecords().length > 0;
   },
+};
+
+const exportModalVisible = ref(false);
+const selectedRowId = ref<number>(0);
+
+const showExportModal = (id: number) => {
+  selectedRowId.value = id;
+  exportModalVisible.value = true;
+};
+
+const closeExportModal = () => {
+  exportModalVisible.value = false;
 };
 
 // const formOptions: VbenFormProps = {
@@ -100,6 +113,15 @@ const gridOptions: VxeGridProps<PsEbkInfo> = {
                   icon: 'hugeicons:quiz-04',
                   tooltip: '进入模拟考试',
                   onClick: createOnlinePractice.bind(null, row),
+                },
+              row.questionsCount &&
+                row.questionsCount > 0 && {
+                  icon: 'ant-design:file-pdf-outlined',
+                  type: 'link',
+                  tooltip: '导出PDF',
+                  onClick: () => {
+                    showExportModal(row.id!);
+                  },
                 },
               {
                 type: 'link',
@@ -215,5 +237,11 @@ async function deleteEbk(id: number) {
       </template>
       <template #toolbar-buttons></template>
     </Grid>
+    <ExportPDFModal
+      v-model:open="exportModalVisible"
+      :id="selectedRowId"
+      @close="closeExportModal"
+      source="ebk"
+    />
   </Page>
 </template>

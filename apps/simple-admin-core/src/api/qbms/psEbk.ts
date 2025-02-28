@@ -1,6 +1,17 @@
-import type { BaseDataResp, BaseIDReq, BaseResp } from '#/api/model/baseModel';
+import type {
+  BaseDataResp,
+  BaseIDReq,
+  BaseResp,
+  BaseUUIDReq,
+} from '#/api/model/baseModel';
 
-import type { EbkDetail, PsEbkInfo, PsEbkListResp } from './model/psEbkModel';
+import type {
+  EbkDetail,
+  ListEbkReq,
+  OutPutPdfReq,
+  PsEbkInfo,
+  PsEbkListResp,
+} from './model/psEbkModel';
 
 import { requestClient } from '#/api/request';
 
@@ -10,6 +21,7 @@ enum Api {
   DeletePsEbk = '/question-api/ebk/delete',
   GetPsEbkById = '/question-api/ebk',
   GetPsEbkList = '/question-api/ebk/list',
+  OutPutPdf = '/question-api/ebk/output_pdf',
   RemoveFromEbk = '/question-api/ebk/remove',
   UpdatePsEbk = '/question-api/ebk/update',
 }
@@ -59,4 +71,8 @@ export const addToEbk = (params: EbkDetail) => {
 
 export const removeFromEbk = (params: EbkDetail) => {
   return requestClient.post<BaseResp>(Api.RemoveFromEbk, params);
+};
+
+export const outPutPdfEbk = (params: OutPutPdfReq) => {
+  return requestClient.post<BaseUUIDReq>(Api.OutPutPdf, params);
 };

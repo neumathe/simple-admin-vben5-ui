@@ -3,8 +3,10 @@ import type {
   BaseIDReq,
   BaseIDResp,
   BaseResp,
+  BaseUUIDReq,
 } from '#/api/model/baseModel';
 
+import type { OutPutPdfReq } from './model/psEbkModel';
 import type {
   CreateOnlinePracticeReq,
   GetPsOnlinePracticeListReq,
@@ -21,6 +23,7 @@ enum Api {
   DeletePsOnlinePractice = '/question-api/online_practice/delete',
   GetPsOnlinePracticeById = '/question-api/online_practice',
   GetPsOnlinePracticeList = '/question-api/online_practice/list',
+  OutPutPdf = '/question-api/online_practice/output_pdf',
   SubmitPractice = '/question-api/online_practice/submit',
 }
 
@@ -64,4 +67,8 @@ export const getPsOnlinePracticeById = (params: BaseIDReq) => {
     Api.GetPsOnlinePracticeById,
     params,
   );
+};
+
+export const outPutPdfOnlinePractice = (params: OutPutPdfReq) => {
+  return requestClient.post<BaseUUIDReq>(Api.OutPutPdf, params);
 };

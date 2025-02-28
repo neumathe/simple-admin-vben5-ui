@@ -11,6 +11,7 @@ import {
   getPsOnlinePracticeList,
 } from '#/api/qbms/psOnlinePractice';
 import { getPsSubjectList } from '#/api/qbms/psSubject';
+import { ExportPDFModal } from '#/components/outputPDF';
 import { TableAction } from '#/components/table/table-action';
 import { Page } from '@vben/common-ui';
 import { $t } from '@vben/locales';
@@ -21,6 +22,18 @@ import { useRouter } from 'vue-router';
 defineOptions({
   name: 'SequentialPractice',
 });
+
+const exportModalVisible = ref(false);
+const selectedRowId = ref<number>(0);
+
+const showExportModal = (id: number) => {
+  selectedRowId.value = id;
+  exportModalVisible.value = true;
+};
+
+const closeExportModal = () => {
+  exportModalVisible.value = false;
+};
 
 const router = useRouter();
 
@@ -124,6 +137,7 @@ const gridOptions: VxeGridProps<PsOnlinePracticeInfo> = {
       title: $t('common.action'),
       fixed: 'right',
       field: 'action',
+      minWidth: 120,
       slots: {
         default: ({ row }) =>
           h(TableAction, {
@@ -131,7 +145,7 @@ const gridOptions: VxeGridProps<PsOnlinePracticeInfo> = {
               row.submitedAt === null
                 ? {
                     type: 'link',
-                    icon: 'clarity:note-edit-line',
+                    icon: 'carbon:continue',
                     tooltip: '继续',
                     onClick: () => {
                       router.push(`/qbmsc/online-practice/${row.id}`);
@@ -145,6 +159,14 @@ const gridOptions: VxeGridProps<PsOnlinePracticeInfo> = {
                       router.push(`/qbmsc/online-practice/${row.id}`);
                     },
                   },
+              {
+                icon: 'ant-design:file-pdf-outlined',
+                type: 'link',
+                tooltip: '导出PDF',
+                onClick: () => {
+                  showExportModal(row.id!);
+                },
+              },
               {
                 icon: 'ant-design:delete-outlined',
                 type: 'link',
@@ -231,5 +253,11 @@ async function deletePractice(id: number) {
 
       <template #toolbar-tools> </template>
     </Grid>
+    <ExportPDFModal
+      v-model:open="exportModalVisible"
+      :id="selectedRowId"
+      @close="closeExportModal"
+      source="op"
+    />
   </Page>
 </template>

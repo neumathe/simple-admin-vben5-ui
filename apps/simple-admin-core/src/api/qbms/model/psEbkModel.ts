@@ -26,6 +26,13 @@ export interface ListEbkReq {
   page: number;
   pageSize: number;
 }
+
+export interface OutPutPdfReq {
+  id: number;
+  includeAnalysis: boolean;
+  onlyCorrect: boolean;
+  highlightCorrect: boolean;
+}
 /**
  *  @description: PsEbk list response
  */
